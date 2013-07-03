@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+
+    <!-- <bean/> definitions here -->
+    <bean id="globals" class="nl.verheulconsultants.switchispmaven.Globals">
+        <constructor-arg value="C:\\tmp\\SwitchISPservice.log" />
+    </bean>
+    
+    <bean id="functions" class="nl.verheulconsultants.switchispmaven.Functions">
+        <constructor-arg ref="globals" />
+        <constructor-arg ref="logging" />
+    </bean>
+    
+    <bean id="logging" class="nl.verheulconsultants.switchispmaven.LoggerImp">
+        <constructor-arg ref="globals" />
+        <constructor-arg name="resourceBundleName"><null/></constructor-arg>
+    </bean>
+        
+    <bean id="eMailClient" class="nl.verheulconsultants.switchispmaven.EMailClientImp">
+        <constructor-arg ref="functions" />
+        <constructor-arg ref="logging" />
+    </bean>
+    
+    <bean id="switchOver" class="nl.verheulconsultants.switchispmaven.SwitchOverImp">
+        <constructor-arg ref="globals" />
+        <constructor-arg ref="functions" />
+        <constructor-arg ref="logging" />
+        <constructor-arg ref="eMailClient" />
+    </bean>
+    
+    <bean id="autoRevert" class="nl.verheulconsultants.switchispmaven.TryToRevertToPrimaryISP">
+        <constructor-arg ref="globals" />
+        <constructor-arg ref="functions" />
+        <constructor-arg ref="logging" />
+        <constructor-arg ref="switchOver" />
+    </bean>
+    
+    <bean id="controller" class="nl.verheulconsultants.switchispmaven.ControllerImp">
+        <constructor-arg ref="globals" />
+        <constructor-arg ref="functions" />
+        <constructor-arg ref="logging" />
+        <constructor-arg ref="switchOver" />
+        <constructor-arg ref="autoRevert" />
+    </bean>
+
+    <bean id="theService" class="nl.verheulconsultants.switchispmaven.TheServiceImp">
+        <constructor-arg ref="globals" />
+        <constructor-arg ref="functions" />
+        <constructor-arg ref="logging" />
+        <constructor-arg ref="switchOver" />
+        <constructor-arg ref="controller" />
+    </bean>
+    
+    
+</beans>
