@@ -8,6 +8,11 @@ package nl.verheulconsultants.switchispmaven;
 public interface MBeanFromMainMBean {
 
     /**
+     * Get the program version
+     */
+    public String getProgramVersion();
+    
+    /**
      * Get the current ISP connection
      */
     public String getCurrentISP();

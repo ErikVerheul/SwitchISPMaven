@@ -70,7 +70,9 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     protected String getDescription(MBeanAttributeInfo info) {
         String description = null;
-        if (info.getName().equals("CurrentISP")) {
+        if (info.getName().equals("ProgramVersion")) {
+            description = "The program name and current version";
+        } else if (info.getName().equals("CurrentISP")) {
             description = "The current ISP connection";
         } else if (info.getName().equals("EmailAddress")) {
             description = "Where the switchover messages go";
@@ -200,6 +202,14 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
             description = "Set Path and name of the log file and try to log to this file";
         }
         return description;
+    }
+    
+    /**
+     * Get the program version
+     */
+    @Override
+    public String getProgramVersion() {
+        return "SwitchISPMaven v.1.0";
     }
 
     /**
