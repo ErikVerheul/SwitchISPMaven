@@ -17,11 +17,11 @@ public class TheServiceImp implements TheService {
     
     private Globals g;
     private Functions f;
-    private LoggerImp myLogger;
+    private MyLogger myLogger;
     private SwitchOver so;
     private Controller controller;
     
-    TheServiceImp(Globals g, Functions f, LoggerImp logger, SwitchOver so, Controller controller) {
+    TheServiceImp(Globals g, Functions f, MyLogger logger, SwitchOver so, Controller controller) {
         this.g = g;
         this.f = f;
         this.myLogger = logger;

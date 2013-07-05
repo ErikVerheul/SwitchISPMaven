@@ -16,10 +16,10 @@ public class SwitchOverImp implements SwitchOver {
 
     private Globals g;
     private Functions f;
-    private LoggerImp myLogger;
+    private MyLogger myLogger;
     private EMailClient eMailClient;
 
-    SwitchOverImp(Globals g, Functions f, LoggerImp myLogger, EMailClient eMailClient) {
+    SwitchOverImp(Globals g, Functions f, MyLogger myLogger, EMailClient eMailClient) {
         this.g = g;
         this.f = f;
         this.myLogger = myLogger;

@@ -11,10 +11,10 @@ import org.apache.commons.net.smtp.SimpleSMTPHeader;
  * @author Erik
  */
 public class EMailClientImp implements EMailClient {
-    private LoggerImp myLogger;
+    private MyLogger myLogger;
     private Functions f;
 
-    EMailClientImp(Functions f, LoggerImp myLogger) {
+    EMailClientImp(Functions f, MyLogger myLogger) {
         this.f = f;
         this.myLogger = myLogger;
     }

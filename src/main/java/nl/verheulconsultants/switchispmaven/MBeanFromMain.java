@@ -25,12 +25,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
 
     private Globals g;
     private Functions f;
-    private LoggerImp myLogger;
+    private MyLogger myLogger;
     private Controller controller;
     private SwitchOver so;
     private Level[] levels = {Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO, Level.WARNING, Level.SEVERE, Level.OFF};
 
-    MBeanFromMain(Globals g, Functions f, LoggerImp myLogger, Controller controller, SwitchOver so) throws NotCompliantMBeanException {
+    MBeanFromMain(Globals g, Functions f, MyLogger myLogger, Controller controller, SwitchOver so) throws NotCompliantMBeanException {
         super(MBeanFromMainMBean.class);
         this.g = g;
         this.f = f;

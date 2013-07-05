@@ -13,11 +13,11 @@ import java.util.logging.Level;
 public class TryToRevertToPrimaryISP {
     private Globals g;
     private Functions f;
-    private LoggerImp myLogger;
+    private MyLogger myLogger;
     private SwitchOver so;
     private long doNotTryBefore; // in mS.
 
-    TryToRevertToPrimaryISP(Globals g, Functions f, LoggerImp myLogger, SwitchOver so) {
+    TryToRevertToPrimaryISP(Globals g, Functions f, MyLogger myLogger, SwitchOver so) {
         this.g = g;
         this.f = f;
         this.myLogger = myLogger;

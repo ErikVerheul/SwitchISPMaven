@@ -19,8 +19,12 @@ import java.util.logging.Level;
  */
 public class Functions {
     private Globals g;
-    private LoggerImp myLogger;
+    private MyLogger myLogger;
     
+    Functions (Globals g, MyLogger myLogger) {
+        this.g = g;
+        this.myLogger = myLogger;
+    }
     /*
      * Set the application values except the logFileName which is set by the initLogger() it self.
      */
@@ -92,11 +96,6 @@ public class Functions {
             myLogger.log(Level.WARNING, "Er zijn geen hosts opgegeven. De service wacht totdat dit alsnog is gedaan met JConsole.");
         }
         return missing.toString();
-    }
-
-    Functions (Globals g, LoggerImp myLogger) {
-        this.g = g;
-        this.myLogger = myLogger;
     }
     
     String getScriptToSwitch() {

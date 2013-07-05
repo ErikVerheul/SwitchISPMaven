@@ -10,14 +10,14 @@ public class ControllerImp implements Controller {
     
     private Globals g;
     private Functions f;
-    private LoggerImp myLogging;
+    private MyLogger myLogging;
     private boolean done = false;
     private boolean stop = false;
     private boolean exit = false;
     private SwitchOver so;
     private TryToRevertToPrimaryISP autoRevInstance;
 
-    ControllerImp(Globals g, Functions f, LoggerImp myLogging, SwitchOver so, TryToRevertToPrimaryISP autoRevInstance) {
+    ControllerImp(Globals g, Functions f, MyLogger myLogging, SwitchOver so, TryToRevertToPrimaryISP autoRevInstance) {
         this.g = g;
         this.f = f;
         this.myLogging = myLogging;
