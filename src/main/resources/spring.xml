@@ -13,7 +13,7 @@
         <constructor-arg ref="logging" />
     </bean>
     
-    <bean id="logging" class="nl.verheulconsultants.switchispmaven.LoggerImp">
+    <bean id="logging" class="nl.verheulconsultants.switchispmaven.MyLogger">
         <constructor-arg ref="globals" />
         <constructor-arg name="resourceBundleName"><null/></constructor-arg>
     </bean>
