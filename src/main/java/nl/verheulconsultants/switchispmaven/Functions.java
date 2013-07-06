@@ -207,11 +207,15 @@ public class Functions {
      */
     boolean checkISP() {
         // include some test options
-        if (g.currentISP == g.primaryISP && g.simulatePrimaryISPIsDown) {
+        if (g.currentISP == Globals.primaryISP && g.simulatePrimaryISPIsDown) {
             return false;
         }
-        if (g.currentISP == g.backupISP && g.simulateBackupISPIsDown) {
+        if (g.currentISP == Globals.backupISP && g.simulateBackupISPIsDown) {
             return false;
+        }
+        if (g.mockCheckISPisOK) {
+            g.mockCheckISPisOK = false;
+            return true;
         }
 
         boolean hostFound = false;

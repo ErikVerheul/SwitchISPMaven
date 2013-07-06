@@ -15,8 +15,8 @@ import java.util.logging.Level;
  */
 public class Globals {
 
-    final int primaryISP = 0;
-    final int backupISP = 1;
+    final static int primaryISP = 0;
+    final static int backupISP = 1;
     List<String> hosts;
     long lastContactWithAnyHost;
     String propsFileName;
@@ -41,6 +41,7 @@ public class Globals {
     // end of members which can be changed by the user
     boolean simulatePrimaryISPIsDown;
     boolean simulateBackupISPIsDown;
+    boolean mockCheckISPisOK = false;
 
     Globals(String logFileName) {
         //set the default logfile name from spring.xml

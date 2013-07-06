@@ -7,7 +7,7 @@ import java.util.logging.Level;
  * @author Erik
  */
 public class ControllerImp implements Controller {
-    
+
     private Globals g;
     private Functions f;
     private MyLogger myLogging;
@@ -78,10 +78,8 @@ public class ControllerImp implements Controller {
                                 g.lastContactWithAnyHost = System.currentTimeMillis();
                             }
                         }
-                    } else { // if temporarely (backupISPselected = false) on the backup ISP try to automatically switch back to the primary ISP
-                        if (!g.backupISPselected && g.currentISP == g.backupISP) {
-                            autoRevInstance.tryToRevert();
-                        }
+                    } else {
+                        autoRevInstance.tryToRevert();
                     }
                     f.waitMilis(5000);  // wait 5 seconds to check the ISP connection again
                 }

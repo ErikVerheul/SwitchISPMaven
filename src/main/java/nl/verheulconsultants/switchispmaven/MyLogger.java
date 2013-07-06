@@ -17,16 +17,17 @@ import java.util.logging.SimpleFormatter;
  * @author Erik
  */
 public class MyLogger extends Logger {
-    
-    private OutputQueue outputQueue = new OutputQueue();
+
+    private OutputQueue outputQueue;
     private FileHandler loggerFileHandler;
     final static java.util.logging.Logger logger = java.util.logging.Logger.getLogger("switchispservice");
 
-    MyLogger(Globals g, String resourceBundleName) {
+    MyLogger(Globals g, String resourceBundleName, OutputQueue outputQueue) {
         super(g.logFileName, resourceBundleName);
+        this.outputQueue = outputQueue;
     }
 
-        public OutputQueue getOutputQueue() {
+    public OutputQueue getOutputQueue() {
         return outputQueue;
     }
 
@@ -44,7 +45,7 @@ public class MyLogger extends Logger {
         logger.setLevel(Level.INFO);
     }
 
-        public boolean initLogger(String logFileN) {
+    public boolean initLogger(String logFileN) {
         try {
             // close the loggerFileHandler if open
             if (loggerFileHandler != null) {
@@ -58,7 +59,7 @@ public class MyLogger extends Logger {
             return false;
         }
     }
-    
+
     @Override
     public void log(LogRecord record) {
         MessageFormat mf = new MessageFormat(record.getMessage());
