@@ -34,19 +34,11 @@
         <constructor-arg ref="eMailClient" />
     </bean>
     
-    <bean id="autoRevert" class="nl.verheulconsultants.switchispmaven.TryToRevertToPrimaryISP">
-        <constructor-arg ref="globals" />
-        <constructor-arg ref="functions" />
-        <constructor-arg ref="logging" />
-        <constructor-arg ref="switchOver" />
-    </bean>
-    
     <bean id="controller" class="nl.verheulconsultants.switchispmaven.ControllerImp">
         <constructor-arg ref="globals" />
         <constructor-arg ref="functions" />
         <constructor-arg ref="logging" />
         <constructor-arg ref="switchOver" />
-        <constructor-arg ref="autoRevert" />
     </bean>
 
     <bean id="theService" class="nl.verheulconsultants.switchispmaven.TheServiceImp">

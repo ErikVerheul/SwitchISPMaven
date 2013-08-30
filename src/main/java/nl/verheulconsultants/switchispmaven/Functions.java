@@ -33,7 +33,7 @@ public class Functions {
         if (g.props.getProperty("currentISP") == null) {
             missing.append("currentISP,");
         } else {
-            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? g.primaryISP : g.backupISP;
+            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? Globals.primaryISP : Globals.backupISP;
         }
 
         if (g.props.getProperty("triggerDuration") == null) {
@@ -99,7 +99,7 @@ public class Functions {
     }
     
     String getScriptToSwitch() {
-        if (g.currentISP == g.primaryISP) {
+        if (g.currentISP == Globals.primaryISP) {
             return g.backupISPscript;
         } else {
             return g.primaryISPscript;
@@ -107,15 +107,23 @@ public class Functions {
     }
 
     String getCurrentISPString() {
-        if (g.currentISP == g.primaryISP) {
+        if (g.currentISP == Globals.primaryISP) {
             return "primary";
         } else {
             return "backup";
         }
     }
+    
+    String getOtherISPString() {
+        if (g.currentISP == Globals.primaryISP) {
+            return "backup";
+        } else {
+            return "primary";
+        }
+    }
 
     String getCurrentSMTPserver() {
-        if (g.currentISP == g.primaryISP) {
+        if (g.currentISP == Globals.primaryISP) {
             return g.primarySMTPserver;
         } else {
             return g.backupSMTPserver;
@@ -213,6 +221,7 @@ public class Functions {
         if (g.currentISP == Globals.backupISP && g.simulateBackupISPIsDown) {
             return false;
         }
+        // reset test mock setting
         if (g.mockCheckISPisOK) {
             g.mockCheckISPisOK = false;
             return true;

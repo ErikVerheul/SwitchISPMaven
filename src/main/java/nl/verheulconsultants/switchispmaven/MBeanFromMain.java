@@ -289,7 +289,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setRetryInterval(long value) {
         if (value >= 60) {
             g.retryInterval = value;
-            controller.resetTryToRevertToPrimaryISP();
+            so.resetAutoSwitch();
             return "Ok";
         } else {
             return "De duur moet minimaal 60 seconden zijn";
@@ -311,7 +311,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setMaxRetries(int value) {
         if (value >= 0) {
             g.maxRetries = value;
-            controller.resetTryToRevertToPrimaryISP();
+            so.resetAutoSwitch();
             return "Ok";
         } else {
             return "Het aantal pogingen moet 0 of meer zijn";
@@ -709,11 +709,11 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String revertToPrimayISP(String reason) {
         if (g.currentISP == g.backupISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de primaire ISP is aangevraagd om de volgende reden: {0}", reason);
-            if (!so.doSwitchOver(f.getScriptToSwitch(), true, true, reason)) {
+            if (!so.doSwitchOver(true, true, reason)) {
                 return "De omschakeling is mislukt, zie de log.";
             } else {
                 g.backupISPselected = false;
-                controller.resetTryToRevertToPrimaryISP();
+                so.resetAutoSwitch();
                 return "Ok";
             }
         } else {
@@ -731,7 +731,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         if (g.currentISP == g.primaryISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de backup ISP is aangevraagd om de volgende reden: {0}", reason);
 
-            if (!so.doSwitchOver(f.getScriptToSwitch(), true, true, reason)) {
+            if (!so.doSwitchOver(true, true, reason)) {
                 return "De omschakeling is mislukt, zie de log.";
             } else {
                 g.backupISPselected = true;

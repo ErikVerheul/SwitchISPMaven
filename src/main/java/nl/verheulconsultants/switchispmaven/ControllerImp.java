@@ -15,14 +15,12 @@ public class ControllerImp implements Controller {
     private boolean stop = false;
     private boolean exit = false;
     private SwitchOver so;
-    private TryToRevertToPrimaryISP autoRevInstance;
 
-    ControllerImp(Globals g, Functions f, MyLogger myLogging, SwitchOver so, TryToRevertToPrimaryISP autoRevInstance) {
+    ControllerImp(Globals g, Functions f, MyLogger myLogging, SwitchOver so) {
         this.g = g;
         this.f = f;
         this.myLogging = myLogging;
         this.so = so;
-        this.autoRevInstance = autoRevInstance;
     }
 
     @Override
@@ -52,11 +50,6 @@ public class ControllerImp implements Controller {
         return done;
     }
 
-    @Override
-    public void resetTryToRevertToPrimaryISP() {
-        autoRevInstance.reset();
-    }
-
     @SuppressWarnings("static-access")
     @Override
     public void doInBackground() {
@@ -73,13 +66,13 @@ public class ControllerImp implements Controller {
                         myLogging.log(Level.INFO, "De {0} ISP is niet bereikbaar. Tijd over tot omschakeling is {1} sec.",
                                 new Object[]{f.getCurrentISPString(), timeLeftForSwitchOver / 1000});
                         if (timeLeftForSwitchOver < 0) {
-                            if (so.doSwitchOver(f.getScriptToSwitch(), true, false, null)) {
+                            if (so.doSwitchOver(true, false, null)) {
                                 myLogging.log(Level.INFO, "Er is automatisch overgeschakeld naar de {0} ISP.", f.getCurrentISPString());
                                 g.lastContactWithAnyHost = System.currentTimeMillis();
                             }
                         }
                     } else {
-                        autoRevInstance.tryToRevert();
+                        so.tryToRevert();
                     }
                     f.waitMilis(5000);  // wait 5 seconds to check the ISP connection again
                 }

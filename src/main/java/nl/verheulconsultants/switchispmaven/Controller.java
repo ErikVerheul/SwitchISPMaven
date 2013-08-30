@@ -20,7 +20,5 @@ public interface Controller {
 
     boolean isDone();
 
-    void resetTryToRevertToPrimaryISP();
-
     void doInBackground();
 }

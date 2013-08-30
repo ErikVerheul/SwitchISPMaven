@@ -6,5 +6,7 @@ package nl.verheulconsultants.switchispmaven;
  */
 public interface SwitchOver {
 
-    boolean doSwitchOver(String command, boolean sendMail, boolean manualSwitch, String reason);
+    boolean doSwitchOver(boolean sendMail, boolean manualSwitch, String reason);
+    void tryToRevert();
+    void resetAutoSwitch();
 }
