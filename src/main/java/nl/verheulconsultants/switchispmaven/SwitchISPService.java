@@ -13,6 +13,7 @@ package nl.verheulconsultants.switchispmaven;
  * Verheul Consultants 2011-2013
  */
 
+import java.io.File;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
@@ -20,6 +21,7 @@ import org.springframework.core.io.ClassPathResource;
 public class SwitchISPService {
 
     public static void main(String[] args) {
+        System.out.println("Files are read from " + new File(".").getAbsolutePath());
         BeanFactory factory = new XmlBeanFactory(new ClassPathResource("spring.xml"));
         TheService service = (TheService) factory.getBean("theService");
         service.runTheService(args);       

@@ -76,8 +76,8 @@ public class SwitchOverImp implements SwitchOver {
      *
      * @param command The script to execute
      * @param sendMail If true send a confirmation mail
-     * @param set to true if this ia a manual switch, false if automatically
-     * @return true if successfull
+     * @param set to true if this is a manual switch, false if automatically
+     * @return true if successful
      *
      */
     @Override
@@ -117,20 +117,8 @@ public class SwitchOverImp implements SwitchOver {
         doNotTryBefore = System.currentTimeMillis() + interval * 1000;
     }
 
-    int getRetries() {
-        return retries;
-    }
-
-    long getInterval() {
-        return interval;
-    }
-
-    void setDoNotTryBefore(long time) {
-        doNotTryBefore = time;
-    }
-
     /**
-     * If temporarely (backupISPselected = false) on the backup ISP try to
+     * If temporarily (backupISPselected = false) on the backup ISP try to
      * automatically switch back to the primary ISP. Switchover to the other ISP
      * if the max trial number is not exceeded. If not successful double the
      * interval for the next try.

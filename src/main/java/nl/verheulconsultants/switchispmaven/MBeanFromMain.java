@@ -247,6 +247,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         Matcher matcher = pattern.matcher(inputStr);
         if (matcher.matches()) {
             g.emailAddress = value;
+            saveParams();
             return "Ok";
         } else {
             return "Het adres heeft een ongeldig formaat";
@@ -268,6 +269,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setTriggerduration(long value) {
         if (value >= 20) {
             g.triggerDuration = value;
+            saveParams();
             return "Ok";
         } else {
             return "De duur moet minimaal 20 seconden zijn";
@@ -290,6 +292,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         if (value >= 60) {
             g.retryInterval = value;
             so.resetAutoSwitch();
+            saveParams();
             return "Ok";
         } else {
             return "De duur moet minimaal 60 seconden zijn";
@@ -312,6 +315,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         if (value >= 0) {
             g.maxRetries = value;
             so.resetAutoSwitch();
+            saveParams();
             return "Ok";
         } else {
             return "Het aantal pogingen moet 0 of meer zijn";
@@ -336,6 +340,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         if (myLogger.initLogger(newLogFileName)) {
             myLogger.log(Level.INFO, "De logfile is veranderd van {0} naar deze file", g.logFileName);
             g.logFileName = newLogFileName;
+            saveParams();
             return "Ok";
         } else {
             myLogger.initLogger(g.logFileName);
@@ -359,6 +364,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         File file = new File(value);
         if (file.exists() && file.isFile()) {
             g.primaryISPscript = value;
+            saveParams();
             return "Ok";
         } else {
             return "Het script kan niet worden gevonden";
@@ -381,6 +387,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         File file = new File(value);
         if (file.exists() && file.isFile()) {
             g.backupISPscript = value;
+            saveParams();
             return "Ok";
         } else {
             return "Het script kan niet worden gevonden";
@@ -402,6 +409,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setPrimarySMTPserver(String value) {
         if (checkURL(value)) {
             g.primarySMTPserver = value;
+            saveParams();
             return "Ok";
         } else {
             return "De ingevoerde host heeft een ongeldige URL";
@@ -423,6 +431,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setBackupSMTPserver(String value) {
         if (checkURL(value)) {
             g.backupSMTPserver = value;
+            saveParams();
             return "Ok";
         } else {
             return "De ingevoerde host heeft een ongeldige URL";
@@ -588,6 +597,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
                     String oldHost = g.hosts.get(hostNumberIndex);
                     g.hosts.set(hostNumberIndex, newHost);
                     myLogger.log(Level.INFO, "De host {0} is vervangen door {1}", new Object[]{oldHost, newHost});
+                    saveParams();
                     return "Host " + oldHost + " is vervangen door " + newHost;
                 } else {
                     return "De ingevoerde host geeft geen response op poort 80";
@@ -613,6 +623,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
             if (g.hosts.size() > 1) {
                 String hostName = g.hosts.get(hostNumberIndex);
                 g.hosts.remove(hostNumberIndex);
+                saveParams();
                 return "Host " + hostName + " is verwijderd";
             } else {
                 return "Er blijft geen host over na verwijdering; voeg eerst een nieuwe toe";
@@ -634,6 +645,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         if (checkURL(extraHost)) {
             if (f.testConnection(extraHost, 80, 2000)) {
                 g.hosts.add(extraHost);
+                saveParams();
                 myLogger.log(Level.INFO, "De host {0} is toegevoegd.", extraHost);
                 return "Host " + extraHost + " is toegevoegd";
             } else {
@@ -653,11 +665,14 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String changeCurrentISP() {
         if (g.currentISP == g.primaryISP) {
             g.currentISP = g.backupISP;
+            saveParams();
             return "The current ISP is nu de backup ISP";
         } else {
             g.currentISP = g.primaryISP;
+            saveParams();
             return "The current ISP is nu de primaire ISP";
         }
+        
     }
 
     /**
@@ -714,6 +729,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
             } else {
                 g.backupISPselected = false;
                 so.resetAutoSwitch();
+                saveParams();
                 return "Ok";
             }
         } else {
@@ -735,6 +751,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
                 return "De omschakeling is mislukt, zie de log.";
             } else {
                 g.backupISPselected = true;
+                saveParams();
                 return "Ok";
             }
         } else {

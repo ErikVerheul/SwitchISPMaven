@@ -79,7 +79,7 @@ public class ControllerImp implements Controller {
             }
             if (!done) {
                 myLogging.log(Level.INFO, "De controller is gestopt.\n");
-                myLogging.log(Level.INFO, "Er zijn {0} succesvolle connectie checks uitgevoerd. {1} onnecties faalden.", new Object[]{g.successfulChecks, g.failedChecks});
+                myLogging.log(Level.INFO, "Er zijn {0} succesvolle connectie checks uitgevoerd. {1} Connecties faalden.", new Object[]{g.successfulChecks, g.failedChecks});
             }
             done = true;
             // wait for instructions to restart or to exit completely
