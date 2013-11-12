@@ -6,7 +6,7 @@ package nl.verheulconsultants.switchispmaven;
  * This program runs as a daemon or service. Use JConsole to administer the JMX enabled functions.
  * Usage: Select hosts which respond to TCP connection on port 80.
  * Option: When the switchISPservice.properties file is not located in the directory where the program is started,
- *         use the file/path as the first argument.
+ *         use the path/file as the first argument.
  *
  *
  * copyright Erik Verheul

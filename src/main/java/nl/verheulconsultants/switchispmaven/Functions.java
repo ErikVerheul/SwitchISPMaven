@@ -154,7 +154,7 @@ public class Functions {
     }
 
     private boolean readProperties() {
-        // read the properties file if existing
+        // read the properties file in the Globals variables, if it exists
         FileInputStream propsInputStream = null;
         try {
             propsInputStream = new FileInputStream(g.propsFileName);
@@ -174,6 +174,10 @@ public class Functions {
         }
     }
 
+    /**
+     * Read the properties from file. On fail set default values.
+     * Update the propertiesSetTemporarely value and save the properties file.
+     */
     void setProperties() {
         if (!readProperties()) {
             // set temporary values
@@ -188,8 +192,10 @@ public class Functions {
             g.props.setProperty("backupISPscript", g.backupISPscript);
             g.props.setProperty("primarySMTPserver", g.primarySMTPserver);
             g.props.setProperty("backupSMTPserver", g.backupSMTPserver);
-            g.propertiesSetTemporarely = true;
+            g.propertiesSetTemporarely = true;         
         }
+        g.propertiesSetTemporarely = false;
+        writeProperties();
     }
 
     /**

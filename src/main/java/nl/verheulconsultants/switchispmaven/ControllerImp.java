@@ -10,7 +10,7 @@ public class ControllerImp implements Controller {
 
     private Globals g;
     private Functions f;
-    private MyLogger myLogging;
+    private MyLogger myLogger;
     private boolean done = false;
     private boolean stop = false;
     private boolean exit = false;
@@ -19,7 +19,7 @@ public class ControllerImp implements Controller {
     ControllerImp(Globals g, Functions f, MyLogger myLogging, SwitchOver so) {
         this.g = g;
         this.f = f;
-        this.myLogging = myLogging;
+        this.myLogger = myLogging;
         this.so = so;
     }
 
@@ -55,7 +55,7 @@ public class ControllerImp implements Controller {
     public void doInBackground() {
         done = false;
         stop = false;
-        myLogging.log(Level.INFO, "De controller is gestart.");
+        myLogger.log(Level.INFO, "De controller is gestart.");
 
         do {
             // wait until the JMX client defines at least one host
@@ -63,11 +63,11 @@ public class ControllerImp implements Controller {
                 while (!stop) {
                     if (!f.checkISP()) {
                         long timeLeftForSwitchOver = g.triggerDuration * 1000L - (System.currentTimeMillis() - g.lastContactWithAnyHost);
-                        myLogging.log(Level.INFO, "De {0} ISP is niet bereikbaar. Tijd over tot omschakeling is {1} sec.",
+                        myLogger.log(Level.INFO, "De {0} ISP is niet bereikbaar. Tijd over tot omschakeling is {1} sec.",
                                 new Object[]{f.getCurrentISPString(), timeLeftForSwitchOver / 1000});
                         if (timeLeftForSwitchOver < 0) {
                             if (so.doSwitchOver(true, false, null)) {
-                                myLogging.log(Level.INFO, "Er is automatisch overgeschakeld naar de {0} ISP.", f.getCurrentISPString());
+                                myLogger.log(Level.INFO, "Er is automatisch overgeschakeld naar de {0} ISP.", f.getCurrentISPString());
                                 g.lastContactWithAnyHost = System.currentTimeMillis();
                             }
                         }
@@ -78,8 +78,8 @@ public class ControllerImp implements Controller {
                 }
             }
             if (!done) {
-                myLogging.log(Level.INFO, "De controller is gestopt.\n");
-                myLogging.log(Level.INFO, "Er zijn {0} succesvolle connectie checks uitgevoerd. {1} Connecties faalden.", new Object[]{g.successfulChecks, g.failedChecks});
+                myLogger.log(Level.INFO, "De controller is gestopt.\n");
+                myLogger.log(Level.INFO, "Er zijn {0} succesvolle connectie checks uitgevoerd. {1} Connecties faalden.", new Object[]{g.successfulChecks, g.failedChecks});
             }
             done = true;
             // wait for instructions to restart or to exit completely
