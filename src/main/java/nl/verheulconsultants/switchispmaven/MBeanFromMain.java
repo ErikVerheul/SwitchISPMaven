@@ -29,6 +29,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     private Controller controller;
     private SwitchOver so;
     private Level[] levels = {Level.ALL, Level.FINEST, Level.FINER, Level.FINE, Level.CONFIG, Level.INFO, Level.WARNING, Level.SEVERE, Level.OFF};
+    private String wrongUrl = "De ingevoerde host heeft een ongeldige URL";
 
     MBeanFromMain(Globals g, Functions f, MyLogger myLogger, Controller controller, SwitchOver so) throws NotCompliantMBeanException {
         super(MBeanFromMainMBean.class);
@@ -412,7 +413,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
             saveParams();
             return "Ok";
         } else {
-            return "De ingevoerde host heeft een ongeldige URL";
+            return wrongUrl;
         }
     }
 
@@ -434,7 +435,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
             saveParams();
             return "Ok";
         } else {
-            return "De ingevoerde host heeft een ongeldige URL";
+            return wrongUrl;
         }
     }
 
@@ -534,7 +535,9 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         String missingVars = f.setVars();
         controller.restart();
         myLogger.log(Level.INFO, "De controller is herstart met de opgeslagen parameterwaarden.");
-        if (!missingVars.isEmpty()) myLogger.log(Level.WARNING, "{0} are missing!", missingVars);
+        if (!missingVars.isEmpty()) {
+            myLogger.log(Level.WARNING, "{0} are missing!", missingVars);
+        }
     }
 
     /**
@@ -603,7 +606,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
                     return "De ingevoerde host geeft geen response op poort 80";
                 }
             } else {
-                return "De ingevoerde host heeft een ongeldige URL";
+                return wrongUrl;
             }
         } else {
             return "Er is geen host met index " + hostNumberIndex;
@@ -652,7 +655,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
                 return "De ingevoerde host geeft geen response op poort 80";
             }
         } else {
-            return "De ingevoerde host heeft een ongeldige URL";
+            return wrongUrl;
         }
     }
 

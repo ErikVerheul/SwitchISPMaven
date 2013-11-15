@@ -45,13 +45,14 @@ public class EMailClientImp implements EMailClient {
                 myLogger.log(Level.SEVERE,"Inloggen met HELO commando is mislukt.");
                 return false;
             }
-
-            replyCode = client.mail(recipient); //(specifies who's sending mail)
+            //(specify who's sending mail)
+            replyCode = client.mail(recipient); 
             if (!SMTPReply.isPositiveCompletion(replyCode)) {
                 showErrorMessage("Fout bij het verzenden van het MAIL bericht.", replyCode, client.getReplyString());
                 return false;
             }
-            replyCode = client.rcpt(recipient); //(specifies who's getting it)
+            //(specify who's getting it)
+            replyCode = client.rcpt(recipient);
             if (!SMTPReply.isPositiveCompletion(replyCode)) {
                 showErrorMessage("Fout bij het verzenden van het RCPT bericht.", replyCode, client.getReplyString());
                 return false;

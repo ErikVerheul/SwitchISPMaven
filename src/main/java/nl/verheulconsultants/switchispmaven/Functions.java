@@ -39,19 +39,19 @@ public class Functions {
         if (g.props.getProperty("triggerDuration") == null) {
             missing.append("triggerDuration,");
         } else {
-            g.triggerDuration = new Integer(g.props.getProperty("triggerDuration"));
+            g.triggerDuration = Integer.valueOf(g.props.getProperty("triggerDuration"));
         }
 
         if (g.props.getProperty("retryInterval") == null) {
             missing.append("retryInterval,");
         } else {
-            g.retryInterval = new Integer(g.props.getProperty("retryInterval"));
+            g.retryInterval = Integer.valueOf(g.props.getProperty("retryInterval"));
         }
 
         if (g.props.getProperty("maxRetries") == null) {
             missing.append("maxRetries,");
         } else {
-            g.maxRetries = new Integer(g.props.getProperty("maxRetries"));
+            g.maxRetries = Integer.valueOf(g.props.getProperty("maxRetries"));
         }
 
         if (g.props.getProperty("backupISPselected") == null) {

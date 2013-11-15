@@ -4,6 +4,7 @@
  */
 package nl.verheulconsultants.switchispmaven;
 
+import java.io.IOException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.logging.FileHandler;
@@ -37,7 +38,7 @@ public class MyLogger extends Logger {
      * @param logger the Logger object
      * @param logFileName the Logger File name
      */
-    private void createFileHandler(java.util.logging.Logger logger, String logFileName) throws Exception {
+    private void createFileHandler(java.util.logging.Logger logger, String logFileName) throws IOException  {
         loggerFileHandler = new FileHandler(logFileName, true);
         loggerFileHandler.setFormatter(new SimpleFormatter());
         // Send myLogger output to our FileHandler.
@@ -54,7 +55,7 @@ public class MyLogger extends Logger {
             //open or create a log file
             createFileHandler(logger, logFileN);
             return true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.err.println("Fout bij het initieren van de logger, de oorzaak is: " + e);
             return false;
         }
@@ -63,7 +64,11 @@ public class MyLogger extends Logger {
     @Override
     public void log(LogRecord record) {
         MessageFormat mf = new MessageFormat(record.getMessage());
-        outputQueue.add(new Date(record.getMillis()) + ": " + record.getLevel() + ": " + mf.format(record.getParameters()));
+        try {
+            outputQueue.add(new Date(record.getMillis()) + ": " + record.getLevel() + ": " + mf.format(record.getParameters()));
+        } catch (InterruptedException ex) {
+            System.err.println("Kan log record niet toevoegen, de oorzaak is: " + ex);
+        }
         logger.log(record);
     }
 }
