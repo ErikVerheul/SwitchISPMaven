@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 public class OutputQueue {
     private int size = 50;
     private int maxSize = 1000;
-    BlockingQueue<String> queue;
+    private BlockingQueue<String> queue;
 
     OutputQueue() {
         queue = new LinkedBlockingQueue<String>();
@@ -29,7 +29,7 @@ public class OutputQueue {
         }
     }
 
-    public void setSize(int newSize) throws IllegalArgumentException {
+    public void setSize(int newSize) {
         if (newSize <= 0 || newSize > maxSize) {
             throw new IllegalArgumentException("Output lines range must be >= 1 and <= " + maxSize);
         }
@@ -41,15 +41,11 @@ public class OutputQueue {
         return size;
     }
 
-    public void add(String s) {
+    public void add(String s) throws InterruptedException {
         while (queue.size() >= size) {
             queue.remove();
         }
-        try {
-            queue.put(s);
-        } catch (InterruptedException e) {
-            System.out.println(s + " not added to queue, error: " + e);
-        }
+        queue.put(s);
     }
 
     public String getAll() {
