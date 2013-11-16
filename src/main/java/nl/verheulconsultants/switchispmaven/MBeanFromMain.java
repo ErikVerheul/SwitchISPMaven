@@ -218,10 +218,10 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getCurrentISP() {
-        if (g.currentISP == g.primaryISP) {
+        if (g.currentISP == g.PrimaryISP) {
             return "Primaire ISP";
         }
-        if (g.currentISP == g.backupISP) {
+        if (g.currentISP == g.BackupISP) {
             return "Backup ISP";
         }
         return "De ISP is fout ingesteld op de waarde " + g.currentISP;
@@ -666,12 +666,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String changeCurrentISP() {
-        if (g.currentISP == g.primaryISP) {
-            g.currentISP = g.backupISP;
+        if (g.currentISP == g.PrimaryISP) {
+            g.currentISP = g.BackupISP;
             saveParams();
             return "The current ISP is nu de backup ISP";
         } else {
-            g.currentISP = g.primaryISP;
+            g.currentISP = g.PrimaryISP;
             saveParams();
             return "The current ISP is nu de primaire ISP";
         }
@@ -725,7 +725,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String revertToPrimayISP(String reason) {
-        if (g.currentISP == g.backupISP) {
+        if (g.currentISP == g.BackupISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de primaire ISP is aangevraagd om de volgende reden: {0}", reason);
             if (!so.doSwitchOver(true, true, reason)) {
                 return "De omschakeling is mislukt, zie de log.";
@@ -747,7 +747,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String switchToBackupISP(String reason) {
-        if (g.currentISP == g.primaryISP) {
+        if (g.currentISP == g.PrimaryISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de backup ISP is aangevraagd om de volgende reden: {0}", reason);
 
             if (!so.doSwitchOver(true, true, reason)) {

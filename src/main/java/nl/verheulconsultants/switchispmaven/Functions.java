@@ -33,7 +33,7 @@ public class Functions {
         if (g.props.getProperty("currentISP") == null) {
             missing.append("currentISP,");
         } else {
-            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? Globals.primaryISP : Globals.backupISP;
+            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? Globals.PrimaryISP : Globals.BackupISP;
         }
 
         if (g.props.getProperty("triggerDuration") == null) {
@@ -99,7 +99,7 @@ public class Functions {
     }
     
     String getScriptToSwitch() {
-        if (g.currentISP == Globals.primaryISP) {
+        if (g.currentISP == Globals.PrimaryISP) {
             return g.backupISPscript;
         } else {
             return g.primaryISPscript;
@@ -107,7 +107,7 @@ public class Functions {
     }
 
     String getCurrentISPString() {
-        if (g.currentISP == Globals.primaryISP) {
+        if (g.currentISP == Globals.PrimaryISP) {
             return "primary";
         } else {
             return "backup";
@@ -115,7 +115,7 @@ public class Functions {
     }
     
     String getOtherISPString() {
-        if (g.currentISP == Globals.primaryISP) {
+        if (g.currentISP == Globals.PrimaryISP) {
             return "backup";
         } else {
             return "primary";
@@ -123,7 +123,7 @@ public class Functions {
     }
 
     String getCurrentSMTPserver() {
-        if (g.currentISP == Globals.primaryISP) {
+        if (g.currentISP == Globals.PrimaryISP) {
             return g.primarySMTPserver;
         } else {
             return g.backupSMTPserver;
@@ -221,10 +221,10 @@ public class Functions {
      */
     boolean checkISP() {
         // include some test options
-        if (g.currentISP == Globals.primaryISP && g.simulatePrimaryISPIsDown) {
+        if (g.currentISP == Globals.PrimaryISP && g.simulatePrimaryISPIsDown) {
             return false;
         }
-        if (g.currentISP == Globals.backupISP && g.simulateBackupISPIsDown) {
+        if (g.currentISP == Globals.BackupISP && g.simulateBackupISPIsDown) {
             return false;
         }
         // reset test mock setting

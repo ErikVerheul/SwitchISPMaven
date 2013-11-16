@@ -1,5 +1,5 @@
 /*
- * This class extends the Java logger with a copy of the last entries
+ * This class extends the Java Logger with a copy of the last entries
  * in a queue which can be viewed with JMX.
  */
 package nl.verheulconsultants.switchispmaven;
@@ -21,7 +21,7 @@ public class MyLogger extends Logger {
 
     private OutputQueue outputQueue;
     private FileHandler loggerFileHandler;
-    static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger("switchispservice");
+    static final java.util.logging.Logger Logger = java.util.logging.Logger.getLogger("switchispservice");
 
     MyLogger(Globals g, String resourceBundleName, OutputQueue outputQueue) {
         super(g.logFileName, resourceBundleName);
@@ -35,7 +35,7 @@ public class MyLogger extends Logger {
     /**
      * Open or create a log file with file name
      *
-     * @param logger the Logger object
+     * @param Logger the Logger object
      * @param logFileName the Logger File name
      */
     private void createFileHandler(java.util.logging.Logger logger, String logFileName) throws IOException  {
@@ -53,7 +53,7 @@ public class MyLogger extends Logger {
                 loggerFileHandler.close();
             }
             //open or create a log file
-            createFileHandler(logger, logFileN);
+            createFileHandler(Logger, logFileN);
             return true;
         } catch (IOException e) {
             System.err.println("Fout bij het initieren van de logger, de oorzaak is: " + e);
@@ -69,6 +69,6 @@ public class MyLogger extends Logger {
         } catch (InterruptedException ex) {
             System.err.println("Kan log record niet toevoegen, de oorzaak is: " + ex);
         }
-        logger.log(record);
+        Logger.log(record);
     }
 }

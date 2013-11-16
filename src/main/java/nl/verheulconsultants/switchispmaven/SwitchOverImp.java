@@ -30,13 +30,13 @@ public class SwitchOverImp implements SwitchOver {
     }
 
     private void reverseCurrentISP() {
-        if (g.currentISP == g.primaryISP) {
-            g.currentISP = g.backupISP;
+        if (g.currentISP == g.PrimaryISP) {
+            g.currentISP = g.BackupISP;
         } else {
-            g.currentISP = g.primaryISP;
+            g.currentISP = g.PrimaryISP;
         }
-        g.props.setProperty("currentISP", (g.currentISP == g.primaryISP) ? "primaryISP" : "backupISP");
-        myLogger.log(Level.INFO, "De ISP is gewisseld naar de {0}", ((g.currentISP == g.primaryISP) ? "primary ISP" : "backup ISP"));
+        g.props.setProperty("currentISP", (g.currentISP == g.PrimaryISP) ? "primaryISP" : "backupISP");
+        myLogger.log(Level.INFO, "De ISP is gewisseld naar de {0}", ((g.currentISP == g.PrimaryISP) ? "primary ISP" : "backup ISP"));
         f.writeProperties();
     }
     
@@ -126,7 +126,7 @@ public class SwitchOverImp implements SwitchOver {
      */
     @Override
     public void tryToRevert() {
-        if (!g.backupISPselected && g.currentISP == Globals.backupISP) {
+        if (!g.backupISPselected && g.currentISP == Globals.BackupISP) {
             myLogger.log(Level.INFO, "Try to revert to the primary ISP: trialsLeft = {0}, time left (S) = {1}",
                     new Object[]{retries, (doNotTryBefore - System.currentTimeMillis()) / 1000});
             if (retries <= 0 || doNotTryBefore > System.currentTimeMillis()) {

@@ -20,10 +20,14 @@ import org.springframework.core.io.ClassPathResource;
 
 final class SwitchISPService {
 
+    private SwitchISPService() {
+        //not called
+    }
+
     public static void main(String[] args) {
         System.out.println("Files are read from " + new File(".").getAbsolutePath());
         BeanFactory factory = new XmlBeanFactory(new ClassPathResource("spring.xml"));
         TheService service = (TheService) factory.getBean("theService");
-        service.runTheService(args);       
+        service.runTheService(args);
     }
 }

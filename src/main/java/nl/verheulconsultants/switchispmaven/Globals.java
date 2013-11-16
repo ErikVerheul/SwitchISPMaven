@@ -12,11 +12,11 @@ import java.util.logging.Level;
 public class Globals {
     static final long ONE_SECOND = 1000L;
     static final long FIVE_SECONDS = 5000L;
-    static final long DEFAULT_triggerDuration = 30L; //seconds
-    static final long DEFAULT_retryInterval = 300L; //seconds
-    static final int DEFAULT_maxRetries = 5;
-    static final int primaryISP = 0;
-    static final int backupISP = 1;
+    static final long DEFAULT_TRIGGERDURATION = 30L; //seconds
+    static final long DEFAULT_RETRYINTERVAL = 300L; //seconds
+    static final int DEFAULT_MAXRETRIES = 5;
+    static final int PrimaryISP = 0;
+    static final int BackupISP = 1;
     List<String> hosts;
     long lastContactWithAnyHost;
     String propsFileName;
@@ -58,10 +58,10 @@ public class Globals {
         simulateBackupISPIsDown = false;
 
         // initialize with temporary values which must be set to real values using JConsole
-        currentISP = primaryISP;
-        triggerDuration = DEFAULT_triggerDuration;
-        retryInterval = DEFAULT_retryInterval;
-        maxRetries = DEFAULT_maxRetries;
+        currentISP = PrimaryISP;
+        triggerDuration = DEFAULT_TRIGGERDURATION;
+        retryInterval = DEFAULT_RETRYINTERVAL;
+        maxRetries = DEFAULT_MAXRETRIES;
         backupISPselected = false;
         emailAddress = "me@mydomain.dom";
         primaryISPscript = "c:\\tmp\\a.bat";

@@ -30,7 +30,7 @@ public class TheServiceImp implements TheService {
     }
 
     private String getScriptToSwitchToCurrentISP() {
-        if (g.currentISP == Globals.primaryISP) {
+        if (g.currentISP == Globals.PrimaryISP) {
             return g.primaryISPscript;
         } else {
             return g.backupISPscript;
@@ -50,7 +50,7 @@ public class TheServiceImp implements TheService {
                 Process proc = Runtime.getRuntime().exec(command);
                 myLogger.log(Level.INFO, "Het script {0} wordt uitgevoerd.\n", command);
                 proc.waitFor();
-                myLogger.log(Level.INFO, "Het script om naar de {0} ISP te schakelen is uitgevoerd.", g.currentISP == Globals.primaryISP ? "primaire" : "backup");
+                myLogger.log(Level.INFO, "Het script om naar de {0} ISP te schakelen is uitgevoerd.", g.currentISP == Globals.PrimaryISP ? "primaire" : "backup");
                 // wait a second for the new connection to settle
                 f.waitMilis(g.ONE_SECOND);
                 return true;
