@@ -18,7 +18,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.core.io.ClassPathResource;
 
-public final class SwitchISPService {
+final class SwitchISPService {
 
     public static void main(String[] args) {
         System.out.println("Files are read from " + new File(".").getAbsolutePath());

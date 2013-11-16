@@ -51,7 +51,8 @@ public class TheServiceImp implements TheService {
                 myLogger.log(Level.INFO, "Het script {0} wordt uitgevoerd.\n", command);
                 proc.waitFor();
                 myLogger.log(Level.INFO, "Het script om naar de {0} ISP te schakelen is uitgevoerd.", g.currentISP == Globals.primaryISP ? "primaire" : "backup");
-                f.waitMilis(1000); // wait a second for the new connection to settle
+                // wait a second for the new connection to settle
+                f.waitMilis(g.ONE_SECOND);
                 return true;
             } catch (java.io.IOException e) {
                 myLogger.log(Level.SEVERE, "Het is niet mogelijk dit script uit te voeren. De oorzaak is:", e);
@@ -69,7 +70,8 @@ public class TheServiceImp implements TheService {
     @Override
     public void runTheService(String[] args) {
         if (args.length >= 1) {
-            g.propsFileName = args[0]; // overrule the default
+            // overrule the default
+            g.propsFileName = args[0];
         }
         f.setProperties();
         if (g.propertiesSetTemporarely) {

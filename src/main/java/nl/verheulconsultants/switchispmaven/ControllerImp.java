@@ -73,7 +73,7 @@ public class ControllerImp implements Controller {
                         so.tryToRevert();
                     }
                     // wait 5 seconds to check the ISP connection again
-                    f.waitMilis(5000);
+                    f.waitMilis(g.FIVE_SECONDS);
                 }
             }
             if (!done) {
@@ -82,7 +82,7 @@ public class ControllerImp implements Controller {
             }
             done = true;
             // wait for instructions to restart or to exit completely
-            f.waitMilis(1000);
+            f.waitMilis(g.ONE_SECOND);
         } while (!exit);
     }
 }

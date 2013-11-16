@@ -240,10 +240,12 @@ public class Functions {
                 g.lastContactWithAnyHost = System.currentTimeMillis();
                 hostFound = true;
                 g.successfulChecks++;
-                break; // when successfull there is no need to try the other hosts
+                // when successfull there is no need to try the other hosts
+                break;
             } else {
                 g.failedChecks++;
-                waitMilis(1000);  // wait 1 second before contacting the next host in the list
+                // wait 1 second before contacting the next host in the list
+                waitMilis(g.ONE_SECOND);
             }
         }
         return hostFound;

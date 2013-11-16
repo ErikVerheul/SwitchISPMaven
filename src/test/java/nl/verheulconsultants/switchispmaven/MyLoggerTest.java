@@ -29,11 +29,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class MyLoggerTest {
 
     @Autowired
-    Globals g;
+    private Globals g;
     @Autowired
-    OutputQueue queue;
+    private OutputQueue queue;
     @Autowired
-    MyLogger instance;
+    private MyLogger instance;
 
     public MyLoggerTest() {
     }

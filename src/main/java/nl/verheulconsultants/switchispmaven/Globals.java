@@ -14,9 +14,13 @@ import java.util.logging.Level;
  * @author Erik
  */
 public class Globals {
-
-    final static int primaryISP = 0;
-    final static int backupISP = 1;
+    final long ONE_SECOND = 1000L;
+    final long FIVE_SECONDS = 5000L;
+    final long DEFAULT_triggerDuration = 30L; //seconds
+    final long DEFAULT_retryInterval = 300L; //seconds
+    final int DEFAULT_maxRetries = 5;
+    static final int primaryISP = 0;
+    static final int backupISP = 1;
     List<String> hosts;
     long lastContactWithAnyHost;
     String propsFileName;
@@ -48,7 +52,7 @@ public class Globals {
         this.logFileName = logFileName;
         hosts = new ArrayList<String>();
         lastContactWithAnyHost = System.currentTimeMillis();
-        propsFileName = "SwitchISPservice.properties"; // default
+        propsFileName = "SwitchISPservice.properties";
         props = new Properties();
         propertiesSetTemporarely = false;
         successfulChecks = 0L;
@@ -59,9 +63,9 @@ public class Globals {
 
         // initialize with temporary values which must be set to real values using JConsole
         currentISP = primaryISP;
-        triggerDuration = 30L; //seconds
-        retryInterval = 300L; //seconds
-        maxRetries = 5;
+        triggerDuration = DEFAULT_triggerDuration;
+        retryInterval = DEFAULT_retryInterval;
+        maxRetries = DEFAULT_maxRetries;
         backupISPselected = false;
         emailAddress = "me@mydomain.dom";
         primaryISPscript = "c:\\tmp\\a.bat";

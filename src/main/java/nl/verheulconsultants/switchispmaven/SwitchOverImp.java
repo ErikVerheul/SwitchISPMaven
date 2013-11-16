@@ -55,7 +55,8 @@ public class SwitchOverImp implements SwitchOver {
                 myLogger.log(Level.INFO, "Het script {0} wordt uitgevoerd.\n", command);
                 proc.waitFor();
                 myLogger.log(Level.INFO, "Het script om {0} van ISP om te schakelen is uitgevoerd.", manualSwitch ? "manueel" : "automatisch");
-                f.waitMilis(1000); // wait a second for the new connection to settle
+                // wait a second for the new connection to settle
+                f.waitMilis(g.ONE_SECOND);
                 return true;
             } catch (java.io.IOException e) {
                 myLogger.log(Level.SEVERE, "Het is niet mogelijk dit script uit te voeren. De oorzaak is:", e);
