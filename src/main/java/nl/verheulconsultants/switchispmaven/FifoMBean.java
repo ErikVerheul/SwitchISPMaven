@@ -10,9 +10,9 @@ package nl.verheulconsultants.switchispmaven;
  */
 public interface FifoMBean {
 
-    public void setSize(int size);
+    void setSize(int size);
 
-    public int getSize();
+    int getSize();
 
-    public String showOutput();
+    String showOutput();
 }

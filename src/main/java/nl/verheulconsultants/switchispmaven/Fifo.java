@@ -6,7 +6,7 @@ package nl.verheulconsultants.switchispmaven;
  */
 public class Fifo implements FifoMBean {
 
-    OutputQueue outputQueue = null;
+    private OutputQueue outputQueue = null;
 
     public Fifo() {
     }

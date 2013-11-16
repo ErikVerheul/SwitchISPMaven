@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package nl.verheulconsultants.switchispmaven;
 
 import java.util.ArrayList;
@@ -14,11 +10,11 @@ import java.util.logging.Level;
  * @author Erik
  */
 public class Globals {
-    final long ONE_SECOND = 1000L;
-    final long FIVE_SECONDS = 5000L;
-    final long DEFAULT_triggerDuration = 30L; //seconds
-    final long DEFAULT_retryInterval = 300L; //seconds
-    final int DEFAULT_maxRetries = 5;
+    static final long ONE_SECOND = 1000L;
+    static final long FIVE_SECONDS = 5000L;
+    static final long DEFAULT_triggerDuration = 30L; //seconds
+    static final long DEFAULT_retryInterval = 300L; //seconds
+    static final int DEFAULT_maxRetries = 5;
     static final int primaryISP = 0;
     static final int backupISP = 1;
     List<String> hosts;
@@ -29,7 +25,7 @@ public class Globals {
     long successfulChecks;
     long failedChecks;
     int switchoverCount;
-    // this values which must be set to real values using JConsole
+    // these values must be set to real values using JConsole
     int currentISP;
     long triggerDuration;
     long retryInterval;
