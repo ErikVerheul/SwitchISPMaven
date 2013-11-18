@@ -10,9 +10,9 @@ import java.util.concurrent.*;
 public class OutputQueue {
     static final int DEFAULT_SIZE = 50;
     static final int MAX_SIZE = 2000;
+    static final int INIT_CAPACITY = 10000;
     private int size = DEFAULT_SIZE;
     private int maxSize = MAX_SIZE;
-    private int INIT_CAPACITY = 10000;
     private BlockingQueue<String> queue;
 
     OutputQueue() {

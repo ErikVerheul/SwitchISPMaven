@@ -30,13 +30,13 @@ public class SwitchOverImp implements SwitchOver {
     }
 
     private void reverseCurrentISP() {
-        if (g.currentISP == g.PRIMARY_ISP) {
-            g.currentISP = g.BACKUP_ISP;
+        if (g.getCurrentISP() == g.PRIMARY_ISP) {
+            g.setCurrentISP(g.BACKUP_ISP);
         } else {
-            g.currentISP = g.PRIMARY_ISP;
+            g.setCurrentISP(g.PRIMARY_ISP);
         }
-        g.props.setProperty("currentISP", (g.currentISP == g.PRIMARY_ISP) ? "primaryISP" : "backupISP");
-        myLogger.log(Level.INFO, "De ISP is gewisseld naar de {0}", ((g.currentISP == g.PRIMARY_ISP) ? "primary ISP" : "backup ISP"));
+        g.getProps().setProperty("currentISP", (g.getCurrentISP() == g.PRIMARY_ISP) ? "primaryISP" : "backupISP");
+        myLogger.log(Level.INFO, "De ISP is gewisseld naar de {0}", ((g.getCurrentISP() == g.PRIMARY_ISP) ? "primary ISP" : "backup ISP"));
         f.writeProperties();
     }
     
@@ -86,7 +86,7 @@ public class SwitchOverImp implements SwitchOver {
         myLogger.log(Level.INFO, "Nu wordt overgeschakeld.");
         if (switchNow(manualSwitch) && f.checkISP()) {
             reverseCurrentISP();
-            g.switchoverCount++;
+            g.increaseSwitchoverCount();
             resetAutoSwitch();
             if (sendMail) {
                 doSendMail(manualSwitch, reason);
@@ -101,7 +101,7 @@ public class SwitchOverImp implements SwitchOver {
 
     private void doSendMail(boolean manualSwitch, String reason) {
         java.util.Date date = new java.util.Date();
-        if (eMailClient.sendEMail(g.emailAddress, g.emailAddress,
+        if (eMailClient.sendEMail(g.getEmailAddress(), g.getEmailAddress(),
                 "SwitchISP is " + (manualSwitch ? "manueel" : "automatisch") + " naar de " + f.getCurrentISPString() + " ISP overgeschakeld.\n"
                 + "Dit bericht is verzonden op " + new Timestamp(date.getTime()) + "\n" + (reason != null ? "De reden is: " + reason : ""),
                 "Melding van een " + (manualSwitch ? "manuele" : "automatische") + " SwitchISP overschakeling\n")) {
@@ -113,8 +113,8 @@ public class SwitchOverImp implements SwitchOver {
 
     @Override
     public final void resetAutoSwitch() {
-        retries = g.maxRetries;
-        interval = g.retryInterval;
+        retries = g.getMaxRetries();
+        interval = g.getRetryInterval();
         doNotTryBefore = System.currentTimeMillis() + interval * g.ONE_SECOND;
     }
 
@@ -126,7 +126,7 @@ public class SwitchOverImp implements SwitchOver {
      */
     @Override
     public void tryToRevert() {
-        if (!g.backupISPselected && g.currentISP == Globals.BACKUP_ISP) {
+        if (!g.isBackupISPselected() && g.getCurrentISP() == Globals.BACKUP_ISP) {
             myLogger.log(Level.INFO, "Try to revert to the primary ISP: trialsLeft = {0}, time left (S) = {1}",
                     new Object[]{retries, (doNotTryBefore - System.currentTimeMillis()) / g.ONE_SECOND});
             if (retries <= 0 || doNotTryBefore > System.currentTimeMillis()) {

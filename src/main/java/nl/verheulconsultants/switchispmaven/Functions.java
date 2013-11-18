@@ -30,84 +30,84 @@ public class Functions {
      */
     String setVars() {
         StringBuilder missing = new StringBuilder();
-        if (g.props.getProperty("currentISP") == null) {
+        if (g.getProps().getProperty("currentISP") == null) {
             missing.append("currentISP,");
         } else {
-            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? Globals.PRIMARY_ISP : Globals.BACKUP_ISP;
+            g.setCurrentISP(g.getProps().getProperty("currentISP").equals("primaryISP") ? Globals.PRIMARY_ISP : Globals.BACKUP_ISP);
         }
 
-        if (g.props.getProperty("triggerDuration") == null) {
+        if (g.getProps().getProperty("triggerDuration") == null) {
             missing.append("triggerDuration,");
         } else {
-            g.triggerDuration = Integer.valueOf(g.props.getProperty("triggerDuration"));
+            g.setTriggerDuration((long) Integer.valueOf(g.getProps().getProperty("triggerDuration")));
         }
 
-        if (g.props.getProperty("retryInterval") == null) {
+        if (g.getProps().getProperty("retryInterval") == null) {
             missing.append("retryInterval,");
         } else {
-            g.retryInterval = Integer.valueOf(g.props.getProperty("retryInterval"));
+            g.setRetryInterval((long) Integer.valueOf(g.getProps().getProperty("retryInterval")));
         }
 
-        if (g.props.getProperty("maxRetries") == null) {
+        if (g.getProps().getProperty("maxRetries") == null) {
             missing.append("maxRetries,");
         } else {
-            g.maxRetries = Integer.valueOf(g.props.getProperty("maxRetries"));
+            g.setMaxRetries((int) Integer.valueOf(g.getProps().getProperty("maxRetries")));
         }
 
-        if (g.props.getProperty("backupISPselected") == null) {
+        if (g.getProps().getProperty("backupISPselected") == null) {
             missing.append("backupISPselected,");
         } else {
-            g.backupISPselected = Boolean.valueOf(g.props.getProperty("backupISPselected"));
+            g.setBackupISPselected((boolean) Boolean.valueOf(g.getProps().getProperty("backupISPselected")));
         }
 
-        g.emailAddress = g.props.getProperty("emailAddress");
-        if (g.emailAddress == null) {
+        g.setEmailAddress(g.getProps().getProperty("emailAddress"));
+        if (g.getEmailAddress() == null) {
             missing.append("emailAddress,");
         }
 
-        g.backupISPscript = g.props.getProperty("backupISPscript");
-        if (g.backupISPscript == null) {
+        g.setBackupISPscript(g.getProps().getProperty("backupISPscript"));
+        if (g.getBackupISPscript() == null) {
             missing.append("backupISPscript,");
         }
 
-        g.primaryISPscript = g.props.getProperty("primaryISPscript");
-        if (g.primaryISPscript == null) {
+        g.setPrimaryISPscript(g.getProps().getProperty("primaryISPscript"));
+        if (g.getPrimaryISPscript() == null) {
             missing.append("primaryISPscript,");
         }
 
-        g.primarySMTPserver = g.props.getProperty("primarySMTPserver");
-        if (g.primarySMTPserver == null) {
+        g.setPrimarySMTPserver(g.getProps().getProperty("primarySMTPserver"));
+        if (g.getPrimarySMTPserver() == null) {
             missing.append("primarySMTPserver,");
         }
 
-        g.backupSMTPserver = g.props.getProperty("backupSMTPserver");
-        if (g.backupSMTPserver == null) {
+        g.setBackupSMTPserver(g.getProps().getProperty("backupSMTPserver"));
+        if (g.getBackupSMTPserver() == null) {
             missing.append("backupSMTPserver,");
         }
 
         // load the host names if a key with fotmat host<n> exists and the property value has more than zero characters
-        g.hosts.clear();
+        g.getHosts().clear();
         int i = 0;
-        while (g.props.getProperty("host" + i) != null && g.props.getProperty("host" + i).length() > 0) {
-            g.hosts.add(g.props.getProperty("host" + i));
+        while (g.getProps().getProperty("host" + i) != null && g.getProps().getProperty("host" + i).length() > 0) {
+            g.getHosts().add(g.getProps().getProperty("host" + i));
             i++;
         }
-        if (g.hosts.isEmpty()) {
+        if (g.getHosts().isEmpty()) {
             myLogger.log(Level.WARNING, "Er zijn geen hosts opgegeven. De service wacht totdat dit alsnog is gedaan met JConsole.");
         }
         return missing.toString();
     }
     
     String getScriptToSwitch() {
-        if (g.currentISP == Globals.PRIMARY_ISP) {
-            return g.backupISPscript;
+        if (g.getCurrentISP() == Globals.PRIMARY_ISP) {
+            return g.getBackupISPscript();
         } else {
-            return g.primaryISPscript;
+            return g.getPrimaryISPscript();
         }
     }
 
     String getCurrentISPString() {
-        if (g.currentISP == Globals.PRIMARY_ISP) {
+        if (g.getCurrentISP() == Globals.PRIMARY_ISP) {
             return "primary";
         } else {
             return "backup";
@@ -115,7 +115,7 @@ public class Functions {
     }
     
     String getOtherISPString() {
-        if (g.currentISP == Globals.PRIMARY_ISP) {
+        if (g.getCurrentISP() == Globals.PRIMARY_ISP) {
             return "backup";
         } else {
             return "primary";
@@ -123,10 +123,10 @@ public class Functions {
     }
 
     String getCurrentSMTPserver() {
-        if (g.currentISP == Globals.PRIMARY_ISP) {
-            return g.primarySMTPserver;
+        if (g.getCurrentISP() == Globals.PRIMARY_ISP) {
+            return g.getPrimarySMTPserver();
         } else {
-            return g.backupSMTPserver;
+            return g.getBackupSMTPserver();
         }
     }
 
@@ -137,8 +137,8 @@ public class Functions {
     void writeProperties() {
         FileOutputStream propsOutputStream = null;
         try {
-            propsOutputStream = new FileOutputStream(g.propsFileName);
-            g.props.store(propsOutputStream, "SwitchISP property file");
+            propsOutputStream = new FileOutputStream(g.getPropsFileName());
+            g.getProps().store(propsOutputStream, "SwitchISP property file");
             myLogger.log(Level.INFO, "De huidige parameterwaarden zijn opgeslagen.");
         } catch (IOException e) {
             myLogger.log(Level.SEVERE, "Fout bij schrijven van de properties, de oorzaak is {0}", e);
@@ -157,11 +157,11 @@ public class Functions {
         // read the properties file in the Globals variables, if it exists
         FileInputStream propsInputStream = null;
         try {
-            propsInputStream = new FileInputStream(g.propsFileName);
-            g.props.load(propsInputStream);
+            propsInputStream = new FileInputStream(g.getPropsFileName());
+            g.getProps().load(propsInputStream);
             return true;
         } catch (IOException e) {
-            myLogger.log(Level.WARNING, "Fout bij lezen van de properties file " + g.propsFileName + ", de oorzaak is: ", e);
+            myLogger.log(Level.WARNING, "Fout bij lezen van de properties file " + g.getPropsFileName() + ", de oorzaak is: ", e);
             return false;
         } finally {
             try {
@@ -181,20 +181,20 @@ public class Functions {
     void setProperties() {
         if (!readProperties()) {
             // set temporary values
-            g.props.setProperty("currentISP", "primaryISP");
-            g.props.setProperty("logFileName", g.logFileName);
-            g.props.setProperty("triggerDuration", g.triggerDuration + "");
-            g.props.setProperty("retryInterval", g.retryInterval + "");
-            g.props.setProperty("maxRetries", g.maxRetries + "");
-            g.props.setProperty("backupISPselected", g.backupISPselected ? "true" : "false");
-            g.props.setProperty("emailAddress", g.emailAddress);
-            g.props.setProperty("primaryISPscript", g.primaryISPscript);
-            g.props.setProperty("backupISPscript", g.backupISPscript);
-            g.props.setProperty("primarySMTPserver", g.primarySMTPserver);
-            g.props.setProperty("backupSMTPserver", g.backupSMTPserver);
-            g.propertiesSetTemporarely = true;         
+            g.getProps().setProperty("currentISP", "primaryISP");
+            g.getProps().setProperty("logFileName", g.getLogFileName());
+            g.getProps().setProperty("triggerDuration", g.getTriggerDuration() + "");
+            g.getProps().setProperty("retryInterval", g.getRetryInterval() + "");
+            g.getProps().setProperty("maxRetries", g.getMaxRetries() + "");
+            g.getProps().setProperty("backupISPselected", g.isBackupISPselected() ? "true" : "false");
+            g.getProps().setProperty("emailAddress", g.getEmailAddress());
+            g.getProps().setProperty("primaryISPscript", g.getPrimaryISPscript());
+            g.getProps().setProperty("backupISPscript", g.getBackupISPscript());
+            g.getProps().setProperty("primarySMTPserver", g.getPrimarySMTPserver());
+            g.getProps().setProperty("backupSMTPserver", g.getBackupSMTPserver());
+            g.setPropertiesSetTemporarely(true);         
         }
-        g.propertiesSetTemporarely = false;
+        g.setPropertiesSetTemporarely(false);
         writeProperties();
     }
 
@@ -221,29 +221,29 @@ public class Functions {
      */
     boolean checkISP() {
         // include some test options
-        if (g.currentISP == Globals.PRIMARY_ISP && g.simulatePrimaryISPIsDown) {
+        if (g.getCurrentISP() == Globals.PRIMARY_ISP && g.isSimulatePrimaryISPIsDown()) {
             return false;
         }
-        if (g.currentISP == Globals.BACKUP_ISP && g.simulateBackupISPIsDown) {
+        if (g.getCurrentISP() == Globals.BACKUP_ISP && g.isSimulateBackupISPIsDown()) {
             return false;
         }
         // reset test mock setting
-        if (g.mockCheckISPisOK) {
-            g.mockCheckISPisOK = false;
+        if (g.isMockCheckISPisOK()) {
+            g.setMockCheckISPisOK(false);
             return true;
         }
 
         boolean hostFound = false;
-        for (String host : g.hosts) {
+        for (String host : g.getHosts()) {
             // test a TCP connection with the destination host and a time-out.
             if (testConnection(host, Globals.HTTP_PORT, Globals.TIME_OUT)) {
-                g.lastContactWithAnyHost = System.currentTimeMillis();
+                g.setLastContactWithAnyHost(System.currentTimeMillis());
                 hostFound = true;
-                g.successfulChecks++;
+                g.increaseSuccessfulChecks();
                 // when successfull there is no need to try the other hosts
                 break;
             } else {
-                g.failedChecks++;
+                g.increaseFailedChecks();
                 // wait 1 second before contacting the next host in the list
                 waitMilis(Globals.ONE_SECOND);
             }

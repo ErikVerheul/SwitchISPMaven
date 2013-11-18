@@ -30,10 +30,10 @@ public class TheServiceImp implements TheService {
     }
 
     private String getScriptToSwitchToCurrentISP() {
-        if (g.currentISP == Globals.PRIMARY_ISP) {
-            return g.primaryISPscript;
+        if (g.getCurrentISP() == Globals.PRIMARY_ISP) {
+            return g.getPrimaryISPscript();
         } else {
-            return g.backupISPscript;
+            return g.getBackupISPscript();
         }
     }
 
@@ -50,7 +50,7 @@ public class TheServiceImp implements TheService {
                 Process proc = Runtime.getRuntime().exec(command);
                 myLogger.log(Level.INFO, "Het script {0} wordt uitgevoerd.\n", command);
                 proc.waitFor();
-                myLogger.log(Level.INFO, "Het script om naar de {0} ISP te schakelen is uitgevoerd.", g.currentISP == Globals.PRIMARY_ISP ? "primaire" : "backup");
+                myLogger.log(Level.INFO, "Het script om naar de {0} ISP te schakelen is uitgevoerd.", g.getCurrentISP() == Globals.PRIMARY_ISP ? "primaire" : "backup");
                 // wait a second for the new connection to settle
                 f.waitMilis(g.ONE_SECOND);
                 return true;
@@ -71,19 +71,19 @@ public class TheServiceImp implements TheService {
     public void runTheService(String[] args) {
         if (args.length >= 1) {
             // overrule the default
-            g.propsFileName = args[0];
+            g.setPropsFileName(args[0]);
         }
         f.setProperties();
-        if (g.propertiesSetTemporarely) {
+        if (g.isPropertiesSetTemporarely()) {
             myLogger.log(Level.WARNING, "Kan de properties file met de applicatie parameters niet lezen.\n"
                     + "Tijdelijke waarden zijn ingesteld.\n"
                     + "Gebruik JConsole om de correcte waarden in te vullen.");
         }
         // set the logFileName value up front
-        g.logFileName = g.props.getProperty("logFileName");
-        if (g.logFileName != null) {
-            if (myLogger.initLogger(g.logFileName)) {
-                myLogger.log(Level.INFO, "De applicatie wordt gestart met de {0} ISP en log file {1}", new Object[]{f.getCurrentISPString(), g.logFileName});
+        g.setLogFileName(g.getProps().getProperty("logFileName"));
+        if (g.getLogFileName() != null) {
+            if (myLogger.initLogger(g.getLogFileName())) {
+                myLogger.log(Level.INFO, "De applicatie wordt gestart met de {0} ISP en log file {1}", new Object[]{f.getCurrentISPString(), g.getLogFileName()});
                 String missingVariable = f.setVars();
                 if (missingVariable.isEmpty()) {
                     // make sure that when restarting the service the ISP as stored in the properties file is used.

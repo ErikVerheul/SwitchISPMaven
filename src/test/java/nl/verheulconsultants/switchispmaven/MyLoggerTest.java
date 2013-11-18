@@ -70,7 +70,7 @@ public class MyLoggerTest {
     @Test
     public void testInitLogger() {
         System.out.println("initLogger");
-        String logFileN = g.logFileName;
+        String logFileN = g.getLogFileName();
         boolean expResult = true;
         boolean result = instance.initLogger(logFileN);
         assertEquals(expResult, result);
@@ -81,7 +81,7 @@ public class MyLoggerTest {
      * @return the last line of the log file or null when not found
      */
     String getLastLogLine() {
-        String logFileN = g.logFileName;
+        String logFileN = g.getLogFileName();
         BufferedReader reader;        
         try {
             reader = new BufferedReader(new FileReader(logFileN));

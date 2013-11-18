@@ -24,7 +24,7 @@ public class MyLogger extends Logger {
     static final java.util.logging.Logger LOGGER = java.util.logging.Logger.getLogger("switchispservice");
 
     MyLogger(Globals g, String resourceBundleName, OutputQueue outputQueue) {
-        super(g.logFileName, resourceBundleName);
+        super(g.getLogFileName(), resourceBundleName);
         this.outputQueue = outputQueue;
     }
 

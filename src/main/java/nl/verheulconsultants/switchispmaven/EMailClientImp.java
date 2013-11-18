@@ -27,16 +27,16 @@ public class EMailClientImp implements EMailClient {
     @Override
     public boolean sendEMail(String sender, String recipient, String message, String subject) {
         SMTPClient client = new SMTPClient();
-        String SMTPserver = f.getCurrentSMTPserver();
+        String usedSMTPserver = f.getCurrentSMTPserver();
         try {
             int replyCode;
 
-            client.connect(SMTPserver);
+            client.connect(usedSMTPserver);
             // After connection attempt, check the reply code to verify success.
             replyCode = client.getReplyCode();
             if (!SMTPReply.isPositiveCompletion(replyCode)) {
                 client.disconnect();
-                showErrorMessage("De server " + SMTPserver + " weigert de verbindingsaanvraag.", replyCode, client.getReplyString());
+                showErrorMessage("De server " + usedSMTPserver + " weigert de verbindingsaanvraag.", replyCode, client.getReplyString());
                 return false;
             }
 
@@ -75,7 +75,7 @@ public class EMailClientImp implements EMailClient {
 
             return true;
         } catch (IOException e) {
-            myLogger.log(Level.SEVERE, "Kan geen verbinding maken met de server {0}.\nDe oorzaak is: {1}", new Object[]{SMTPserver, e});
+            myLogger.log(Level.SEVERE, "Kan geen verbinding maken met de server {0}.\nDe oorzaak is: {1}", new Object[]{usedSMTPserver, e});
             return false;
         } finally {
             if (client.isConnected()) {

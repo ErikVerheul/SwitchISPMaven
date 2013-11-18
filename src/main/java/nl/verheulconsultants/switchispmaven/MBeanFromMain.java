@@ -127,7 +127,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
             varDescription = "Wat is de reden voor deze manuele switch?";
         } else if (op.getName().equalsIgnoreCase("changeHost") || op.getName().equalsIgnoreCase("removeHost")) {
             if (sequence == 0) {
-                varDescription = "De index van een bestaande hostnaam van 0.." + (g.hosts.size() - 1);
+                varDescription = "De index van een bestaande hostnaam van 0.." + (g.getHosts().size() - 1);
             }
             if (sequence == 1) {
                 varDescription = "Voer hier een host naam in";
@@ -219,13 +219,13 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getCurrentISP() {
-        if (g.currentISP == g.PRIMARY_ISP) {
+        if (g.getCurrentISP() == g.PRIMARY_ISP) {
             return "Primaire ISP";
         }
-        if (g.currentISP == g.BACKUP_ISP) {
+        if (g.getCurrentISP() == g.BACKUP_ISP) {
             return "Backup ISP";
         }
-        return "De ISP is fout ingesteld op de waarde " + g.currentISP;
+        return "De ISP is fout ingesteld op de waarde " + g.getCurrentISP();
     }
 
     /**
@@ -233,7 +233,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getEmailAddress() {
-        return g.emailAddress;
+        return g.getEmailAddress();
     }
 
     /**
@@ -248,7 +248,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         Pattern pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
         Matcher matcher = pattern.matcher(inputStr);
         if (matcher.matches()) {
-            g.emailAddress = value;
+            g.setEmailAddress(value);
             saveParams();
             return "Ok";
         } else {
@@ -261,7 +261,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public long getTriggerduration() {
-        return g.triggerDuration;
+        return g.getTriggerDuration();
     }
 
     /**
@@ -270,7 +270,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     public String setTriggerduration(long value) {
         if (value >= MINIMAL_TRIGGER_DURATION) {
-            g.triggerDuration = value;
+            g.setTriggerDuration(value);
             saveParams();
             return "Ok";
         } else {
@@ -283,7 +283,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public long getRetryInterval() {
-        return g.retryInterval;
+        return g.getRetryInterval();
     }
 
     /**
@@ -292,7 +292,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     public String setRetryInterval(long value) {
         if (value >= MINIMAL_RETRY_INTERVAL_DURATION) {
-            g.retryInterval = value;
+            g.setRetryInterval(value);
             so.resetAutoSwitch();
             saveParams();
             return "Ok";
@@ -302,11 +302,11 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     }
 
     /**
-     * Get the maximum number of retries to revert back to the promary ISP
+     * Get the maximum number of retries to revert back to the primary ISP
      */
     @Override
     public long getMaxRetries() {
-        return g.maxRetries;
+        return g.getMaxRetries();
     }
 
     /**
@@ -315,7 +315,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     public String setMaxRetries(int value) {
         if (value >= 0) {
-            g.maxRetries = value;
+            g.setMaxRetries(value);
             so.resetAutoSwitch();
             saveParams();
             return "Ok";
@@ -329,7 +329,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getLogFileName() {
-        return g.logFileName;
+        return g.getLogFileName();
     }
 
     /**
@@ -340,12 +340,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
         String newLogFileName = value;
         myLogger.log(Level.INFO, "De logfile wordt veranderd naar {0}", newLogFileName);
         if (myLogger.initLogger(newLogFileName)) {
-            myLogger.log(Level.INFO, "De logfile is veranderd van {0} naar deze file", g.logFileName);
-            g.logFileName = newLogFileName;
+            myLogger.log(Level.INFO, "De logfile is veranderd van {0} naar deze file", g.getLogFileName());
+            g.setLogFileName(newLogFileName);
             saveParams();
             return "Ok";
         } else {
-            myLogger.initLogger(g.logFileName);
+            myLogger.initLogger(g.getLogFileName());
             return "De verandering van de log file naar " + newLogFileName + " is mislukt, deze logfile blijft in gebruik.";
         }
     }
@@ -355,7 +355,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getPrimaryISPscript() {
-        return g.primaryISPscript;
+        return g.getPrimaryISPscript();
     }
 
     /**
@@ -365,7 +365,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setPrimaryISPscript(String value) {
         File file = new File(value);
         if (file.exists() && file.isFile()) {
-            g.primaryISPscript = value;
+            g.setPrimaryISPscript(value);
             saveParams();
             return "Ok";
         } else {
@@ -378,7 +378,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getBackupISPscript() {
-        return g.backupISPscript;
+        return g.getBackupISPscript();
     }
 
     /**
@@ -388,7 +388,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setBackupISPscript(String value) {
         File file = new File(value);
         if (file.exists() && file.isFile()) {
-            g.backupISPscript = value;
+            g.setBackupISPscript(value);
             saveParams();
             return "Ok";
         } else {
@@ -401,7 +401,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getPrimarySMTPserver() {
-        return g.primarySMTPserver;
+        return g.getPrimarySMTPserver();
     }
 
     /**
@@ -410,7 +410,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     public String setPrimarySMTPserver(String value) {
         if (checkURL(value)) {
-            g.primarySMTPserver = value;
+            g.setPrimarySMTPserver(value);
             saveParams();
             return "Ok";
         } else {
@@ -423,7 +423,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getBackupSMTPserver() {
-        return g.backupSMTPserver;
+        return g.getBackupSMTPserver();
     }
 
     /**
@@ -432,7 +432,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     public String setBackupSMTPserver(String value) {
         if (checkURL(value)) {
-            g.backupSMTPserver = value;
+            g.setBackupSMTPserver(value);
             saveParams();
             return "Ok";
         } else {
@@ -443,7 +443,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     private int calcCurrentLogLevelIndex() {
         int currentLogLevelIndex = 0;
         for (int i = 0; i < levels.length; i++) {
-            if (g.currentLogLevel == levels[i]) {
+            if (g.getCurrentLogLevel() == levels[i]) {
                 currentLogLevelIndex = i;
             }
         }
@@ -466,11 +466,11 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setCoarserLogLevel() {
         int currentLogLevelIndex = calcCurrentLogLevelIndex();
         if (currentLogLevelIndex < levels.length - 1) {
-            g.currentLogLevel = levels[currentLogLevelIndex + 1];
-            myLogger.setLevel(g.currentLogLevel);
-            return "Log level verhoogd naar " + g.currentLogLevel;
+            g.setCurrentLogLevel(levels[currentLogLevelIndex + 1]);
+            myLogger.setLevel(g.getCurrentLogLevel());
+            return "Log level verhoogd naar " + g.getCurrentLogLevel();
         } else {
-            return " Het log level is " + g.currentLogLevel + " en kan niet verder worden verhoogd";
+            return " Het log level is " + g.getCurrentLogLevel() + " en kan niet verder worden verhoogd";
         }
     }
 
@@ -481,11 +481,11 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String setFinerLogLevel() {
         int currentLogLevelIndex = calcCurrentLogLevelIndex();
         if (currentLogLevelIndex > 0) {
-            g.currentLogLevel = levels[currentLogLevelIndex - 1];
-            myLogger.setLevel(g.currentLogLevel);
-            return "Log level verlaagd naar " + g.currentLogLevel;
+            g.setCurrentLogLevel(levels[currentLogLevelIndex - 1]);
+            myLogger.setLevel(g.getCurrentLogLevel());
+            return "Log level verlaagd naar " + g.getCurrentLogLevel();
         } else {
-            return " Het log level is " + g.currentLogLevel + " en kan niet verder worden verlaagd";
+            return " Het log level is " + g.getCurrentLogLevel() + " en kan niet verder worden verlaagd";
         }
     }
 
@@ -547,11 +547,11 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     private void updatePropertiesWithHosts() {
         int i;
-        for (i = 0; i < g.hosts.size(); i++) {
-            g.props.setProperty("host" + i, (String) g.hosts.get(i));
+        for (i = 0; i < g.getHosts().size(); i++) {
+            g.getProps().setProperty("host" + i, (String) g.getHosts().get(i));
         }
-        while (g.props.getProperty("host" + i) != null) {
-            g.props.setProperty("host" + i, "");
+        while (g.getProps().getProperty("host" + i) != null) {
+            g.getProps().setProperty("host" + i, "");
             i++;
         }
     }
@@ -561,17 +561,17 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public void saveParams() {
-        g.props.setProperty("currentISP", (g.currentISP == 0) ? "primaryISP" : "backupISP");
-        g.props.setProperty("triggerDuration", g.triggerDuration + "");
-        g.props.setProperty("retryInterval", g.retryInterval + "");
-        g.props.setProperty("maxRetries", g.maxRetries + "");
-        g.props.setProperty("backupISPselected", g.backupISPselected ? "true" : "false");
-        g.props.setProperty("primaryISPscript", g.primaryISPscript);
-        g.props.setProperty("backupISPscript", g.backupISPscript);
-        g.props.setProperty("emailAddress", g.emailAddress);
-        g.props.setProperty("primarySMTPserver", g.primarySMTPserver);
-        g.props.setProperty("backupSMTPserver", g.backupSMTPserver);
-        g.props.setProperty("logFileName", g.logFileName);
+        g.getProps().setProperty("currentISP", (g.getCurrentISP() == 0) ? "primaryISP" : "backupISP");
+        g.getProps().setProperty("triggerDuration", g.getTriggerDuration() + "");
+        g.getProps().setProperty("retryInterval", g.getRetryInterval() + "");
+        g.getProps().setProperty("maxRetries", g.getMaxRetries() + "");
+        g.getProps().setProperty("backupISPselected", g.isBackupISPselected() ? "true" : "false");
+        g.getProps().setProperty("primaryISPscript", g.getPrimaryISPscript());
+        g.getProps().setProperty("backupISPscript", g.getBackupISPscript());
+        g.getProps().setProperty("emailAddress", g.getEmailAddress());
+        g.getProps().setProperty("primarySMTPserver", g.getPrimarySMTPserver());
+        g.getProps().setProperty("backupSMTPserver", g.getBackupSMTPserver());
+        g.getProps().setProperty("logFileName", g.getLogFileName());
         updatePropertiesWithHosts();
         f.writeProperties();
     }
@@ -594,12 +594,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String changeHost(int hostNumberIndex, String newHost) {
-        if (hostNumberIndex >= 0 && hostNumberIndex < g.hosts.size()) {
+        if (hostNumberIndex >= 0 && hostNumberIndex < g.getHosts().size()) {
             if (checkURL(newHost)) {
                 // test a TCP connection with the destination host and a time-out.
                 if (f.testConnection(newHost, Globals.HTTP_PORT, g.TIME_OUT)) {
-                    String oldHost = g.hosts.get(hostNumberIndex);
-                    g.hosts.set(hostNumberIndex, newHost);
+                    String oldHost = g.getHosts().get(hostNumberIndex);
+                    g.getHosts().set(hostNumberIndex, newHost);
                     myLogger.log(Level.INFO, "De host {0} is vervangen door {1}", new Object[]{oldHost, newHost});
                     saveParams();
                     return "Host " + oldHost + " is vervangen door " + newHost;
@@ -623,10 +623,10 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String removeHost(int hostNumberIndex) {
-        if (hostNumberIndex >= 0 && hostNumberIndex < g.hosts.size()) {
-            if (g.hosts.size() > 1) {
-                String hostName = g.hosts.get(hostNumberIndex);
-                g.hosts.remove(hostNumberIndex);
+        if (hostNumberIndex >= 0 && hostNumberIndex < g.getHosts().size()) {
+            if (g.getHosts().size() > 1) {
+                String hostName = g.getHosts().get(hostNumberIndex);
+                g.getHosts().remove(hostNumberIndex);
                 saveParams();
                 return "Host " + hostName + " is verwijderd";
             } else {
@@ -648,7 +648,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String addHost(String extraHost) {
         if (checkURL(extraHost)) {
             if (f.testConnection(extraHost, Globals.HTTP_PORT, g.TIME_OUT)) {
-                g.hosts.add(extraHost);
+                g.getHosts().add(extraHost);
                 saveParams();
                 myLogger.log(Level.INFO, "De host {0} is toegevoegd.", extraHost);
                 return "Host " + extraHost + " is toegevoegd";
@@ -667,12 +667,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String changeCurrentISP() {
-        if (g.currentISP == g.PRIMARY_ISP) {
-            g.currentISP = g.BACKUP_ISP;
+        if (g.getCurrentISP() == g.PRIMARY_ISP) {
+            g.setCurrentISP(g.BACKUP_ISP);
             saveParams();
             return "The current ISP is nu de backup ISP";
         } else {
-            g.currentISP = g.PRIMARY_ISP;
+            g.setCurrentISP(g.PRIMARY_ISP);
             saveParams();
             return "The current ISP is nu de primaire ISP";
         }
@@ -688,7 +688,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String showControlledHosts() {
         StringBuilder buf = new StringBuilder();
         int i = 0;
-        for (String s : g.hosts) {
+        for (String s : g.getHosts()) {
             buf.append(i).append(": ").append(s).append("\n");
             i++;
         }
@@ -700,7 +700,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public long getSuccessfulChecks() {
-        return g.successfulChecks;
+        return g.getSuccessfulChecks();
     }
 
     /**
@@ -708,7 +708,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public long getFailedChecks() {
-        return g.failedChecks;
+        return g.getFailedChecks();
     }
 
     /**
@@ -716,7 +716,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public int getSwitchoverCount() {
-        return g.switchoverCount;
+        return g.getSwitchoverCount();
     }
 
     /**
@@ -726,12 +726,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String revertToPrimayISP(String reason) {
-        if (g.currentISP == g.BACKUP_ISP) {
+        if (g.getCurrentISP() == g.BACKUP_ISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de primaire ISP is aangevraagd om de volgende reden: {0}", reason);
             if (!so.doSwitchOver(true, true, reason)) {
                 return "De omschakeling is mislukt, zie de log.";
             } else {
-                g.backupISPselected = false;
+                g.setBackupISPselected(false);
                 so.resetAutoSwitch();
                 saveParams();
                 return "Ok";
@@ -748,13 +748,13 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String switchToBackupISP(String reason) {
-        if (g.currentISP == g.PRIMARY_ISP) {
+        if (g.getCurrentISP() == g.PRIMARY_ISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de backup ISP is aangevraagd om de volgende reden: {0}", reason);
 
             if (!so.doSwitchOver(true, true, reason)) {
                 return "De omschakeling is mislukt, zie de log.";
             } else {
-                g.backupISPselected = true;
+                g.setBackupISPselected(true);
                 saveParams();
                 return "Ok";
             }
@@ -775,17 +775,17 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
 
     @Override
     public void simulatePrimaryISPIsDown() {
-        g.simulatePrimaryISPIsDown = true;
+        g.setSimulatePrimaryISPIsDown(true);
     }
 
     @Override
     public void simulateBackupISPIsDown() {
-        g.simulateBackupISPIsDown = true;
+        g.setSimulateBackupISPIsDown(true);
     }
 
     @Override
     public void stopSimulationISPIsDown() {
-        g.simulatePrimaryISPIsDown = false;
-        g.simulateBackupISPIsDown = false;
+        g.setSimulatePrimaryISPIsDown(false);
+        g.setSimulateBackupISPIsDown(false);
     }
 }
