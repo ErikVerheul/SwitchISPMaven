@@ -15,8 +15,10 @@ public class Globals {
     static final long DEFAULT_TRIGGERDURATION = 30L; //seconds
     static final long DEFAULT_RETRYINTERVAL = 300L; //seconds
     static final int DEFAULT_MAXRETRIES = 5;
-    static final int PrimaryISP = 0;
-    static final int BackupISP = 1;
+    static final int PRIMARY_ISP = 0;
+    static final int BACKUP_ISP = 1;
+    static final int HTTP_PORT = 80;
+    static final int TIME_OUT = 2000;
     List<String> hosts;
     long lastContactWithAnyHost;
     String propsFileName;
@@ -58,7 +60,7 @@ public class Globals {
         simulateBackupISPIsDown = false;
 
         // initialize with temporary values which must be set to real values using JConsole
-        currentISP = PrimaryISP;
+        currentISP = PRIMARY_ISP;
         triggerDuration = DEFAULT_TRIGGERDURATION;
         retryInterval = DEFAULT_RETRYINTERVAL;
         maxRetries = DEFAULT_MAXRETRIES;

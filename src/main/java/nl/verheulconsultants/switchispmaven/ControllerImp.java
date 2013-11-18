@@ -62,9 +62,9 @@ public class ControllerImp implements Controller {
             if (g.hosts.size() > 0) {
                 while (!stop) {
                     if (!f.checkISP()) {
-                        long timeLeftForSwitchOver = g.triggerDuration * 1000L - (System.currentTimeMillis() - g.lastContactWithAnyHost);
+                        long timeLeftForSwitchOver = g.triggerDuration * g.ONE_SECOND - (System.currentTimeMillis() - g.lastContactWithAnyHost);
                         myLogger.log(Level.INFO, "De {0} ISP is niet bereikbaar. Tijd over tot omschakeling is {1} sec.",
-                                new Object[]{f.getCurrentISPString(), timeLeftForSwitchOver / 1000});
+                                new Object[]{f.getCurrentISPString(), timeLeftForSwitchOver / g.ONE_SECOND});
                         if (timeLeftForSwitchOver < 0 && so.doSwitchOver(true, false, null)) {
                                 myLogger.log(Level.INFO, "Er is automatisch overgeschakeld naar de {0} ISP.", f.getCurrentISPString());
                                 g.lastContactWithAnyHost = System.currentTimeMillis();

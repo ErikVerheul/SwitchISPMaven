@@ -8,8 +8,11 @@ import java.util.concurrent.*;
  * @author erik
  */
 public class OutputQueue {
-    private int size = 50;
-    private int maxSize = 1000;
+    static final int DEFAULT_SIZE = 50;
+    static final int MAX_SIZE = 2000;
+    private int size = DEFAULT_SIZE;
+    private int maxSize = MAX_SIZE;
+    private int INIT_CAPACITY = 10000;
     private BlockingQueue<String> queue;
 
     OutputQueue() {
@@ -49,7 +52,7 @@ public class OutputQueue {
     }
 
     public String getAll() {
-        StringBuilder buf = new StringBuilder(10000);
+        StringBuilder buf = new StringBuilder(INIT_CAPACITY);
         Iterator<String> it = queue.iterator();
         while (it.hasNext()) {
             buf.append(it.next());

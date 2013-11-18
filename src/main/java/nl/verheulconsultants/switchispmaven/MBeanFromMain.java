@@ -22,7 +22,8 @@ import javax.management.StandardMBean;
  */
 @SuppressWarnings("static-access")
 public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
-
+    static final long MINIMAL_TRIGGER_DURATION = 20L;
+    static final long MINIMAL_RETRY_INTERVAL_DURATION = 60L;
     private Globals g;
     private Functions f;
     private MyLogger myLogger;
@@ -218,10 +219,10 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String getCurrentISP() {
-        if (g.currentISP == g.PrimaryISP) {
+        if (g.currentISP == g.PRIMARY_ISP) {
             return "Primaire ISP";
         }
-        if (g.currentISP == g.BackupISP) {
+        if (g.currentISP == g.BACKUP_ISP) {
             return "Backup ISP";
         }
         return "De ISP is fout ingesteld op de waarde " + g.currentISP;
@@ -268,7 +269,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String setTriggerduration(long value) {
-        if (value >= 20) {
+        if (value >= MINIMAL_TRIGGER_DURATION) {
             g.triggerDuration = value;
             saveParams();
             return "Ok";
@@ -278,7 +279,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     }
 
     /**
-     * Get the time interval for trying to revert back to the promary ISP
+     * Get the time interval for trying to revert back to the primary ISP
      */
     @Override
     public long getRetryInterval() {
@@ -286,11 +287,11 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     }
 
     /**
-     * Set the time interval for trying to revert back to the promary ISP and reset
+     * Set the time interval for trying to revert back to the primary ISP and reset
      */
     @Override
     public String setRetryInterval(long value) {
-        if (value >= 60) {
+        if (value >= MINIMAL_RETRY_INTERVAL_DURATION) {
             g.retryInterval = value;
             so.resetAutoSwitch();
             saveParams();
@@ -595,8 +596,8 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     public String changeHost(int hostNumberIndex, String newHost) {
         if (hostNumberIndex >= 0 && hostNumberIndex < g.hosts.size()) {
             if (checkURL(newHost)) {
-                // test a TCP connection on port 80 with the destination host and a time-out of 2000 ms.
-                if (f.testConnection(newHost, 80, 2000)) {
+                // test a TCP connection with the destination host and a time-out.
+                if (f.testConnection(newHost, Globals.HTTP_PORT, g.TIME_OUT)) {
                     String oldHost = g.hosts.get(hostNumberIndex);
                     g.hosts.set(hostNumberIndex, newHost);
                     myLogger.log(Level.INFO, "De host {0} is vervangen door {1}", new Object[]{oldHost, newHost});
@@ -638,7 +639,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
 
     /**
      * Voeg een host toe om de verbinding te controleren. Test a TCP connection
-     * on port 80 with the destination host and a time-out of 2000 ms.
+     * with the destination host and a time-out.
      *
      * @param extraHost De extra host URL
      * @return java.lang.String
@@ -646,7 +647,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
     @Override
     public String addHost(String extraHost) {
         if (checkURL(extraHost)) {
-            if (f.testConnection(extraHost, 80, 2000)) {
+            if (f.testConnection(extraHost, Globals.HTTP_PORT, g.TIME_OUT)) {
                 g.hosts.add(extraHost);
                 saveParams();
                 myLogger.log(Level.INFO, "De host {0} is toegevoegd.", extraHost);
@@ -666,12 +667,12 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String changeCurrentISP() {
-        if (g.currentISP == g.PrimaryISP) {
-            g.currentISP = g.BackupISP;
+        if (g.currentISP == g.PRIMARY_ISP) {
+            g.currentISP = g.BACKUP_ISP;
             saveParams();
             return "The current ISP is nu de backup ISP";
         } else {
-            g.currentISP = g.PrimaryISP;
+            g.currentISP = g.PRIMARY_ISP;
             saveParams();
             return "The current ISP is nu de primaire ISP";
         }
@@ -725,7 +726,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String revertToPrimayISP(String reason) {
-        if (g.currentISP == g.BackupISP) {
+        if (g.currentISP == g.BACKUP_ISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de primaire ISP is aangevraagd om de volgende reden: {0}", reason);
             if (!so.doSwitchOver(true, true, reason)) {
                 return "De omschakeling is mislukt, zie de log.";
@@ -747,7 +748,7 @@ public class MBeanFromMain extends StandardMBean implements MBeanFromMainMBean {
      */
     @Override
     public String switchToBackupISP(String reason) {
-        if (g.currentISP == g.PrimaryISP) {
+        if (g.currentISP == g.PRIMARY_ISP) {
             myLogger.log(Level.INFO, "Manuele omschakeling naar de backup ISP is aangevraagd om de volgende reden: {0}", reason);
 
             if (!so.doSwitchOver(true, true, reason)) {

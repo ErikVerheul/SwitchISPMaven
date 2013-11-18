@@ -30,13 +30,13 @@ public class SwitchOverImp implements SwitchOver {
     }
 
     private void reverseCurrentISP() {
-        if (g.currentISP == g.PrimaryISP) {
-            g.currentISP = g.BackupISP;
+        if (g.currentISP == g.PRIMARY_ISP) {
+            g.currentISP = g.BACKUP_ISP;
         } else {
-            g.currentISP = g.PrimaryISP;
+            g.currentISP = g.PRIMARY_ISP;
         }
-        g.props.setProperty("currentISP", (g.currentISP == g.PrimaryISP) ? "primaryISP" : "backupISP");
-        myLogger.log(Level.INFO, "De ISP is gewisseld naar de {0}", ((g.currentISP == g.PrimaryISP) ? "primary ISP" : "backup ISP"));
+        g.props.setProperty("currentISP", (g.currentISP == g.PRIMARY_ISP) ? "primaryISP" : "backupISP");
+        myLogger.log(Level.INFO, "De ISP is gewisseld naar de {0}", ((g.currentISP == g.PRIMARY_ISP) ? "primary ISP" : "backup ISP"));
         f.writeProperties();
     }
     
@@ -115,7 +115,7 @@ public class SwitchOverImp implements SwitchOver {
     public final void resetAutoSwitch() {
         retries = g.maxRetries;
         interval = g.retryInterval;
-        doNotTryBefore = System.currentTimeMillis() + interval * 1000;
+        doNotTryBefore = System.currentTimeMillis() + interval * g.ONE_SECOND;
     }
 
     /**
@@ -126,9 +126,9 @@ public class SwitchOverImp implements SwitchOver {
      */
     @Override
     public void tryToRevert() {
-        if (!g.backupISPselected && g.currentISP == Globals.BackupISP) {
+        if (!g.backupISPselected && g.currentISP == Globals.BACKUP_ISP) {
             myLogger.log(Level.INFO, "Try to revert to the primary ISP: trialsLeft = {0}, time left (S) = {1}",
-                    new Object[]{retries, (doNotTryBefore - System.currentTimeMillis()) / 1000});
+                    new Object[]{retries, (doNotTryBefore - System.currentTimeMillis()) / g.ONE_SECOND});
             if (retries <= 0 || doNotTryBefore > System.currentTimeMillis()) {
                 return;
             }
@@ -141,7 +141,7 @@ public class SwitchOverImp implements SwitchOver {
             } else {
                 // try again later
                 interval = interval * 2;
-                doNotTryBefore = System.currentTimeMillis() + interval * 1000;
+                doNotTryBefore = System.currentTimeMillis() + interval * g.ONE_SECOND;
                 retries--;
                 myLogger.log(Level.INFO, "Trials left to autoswitch back to the primary ISP is set to {0} and the initial delay to {1} seconds.",
                         new Object[]{retries, interval});

@@ -33,7 +33,7 @@ public class Functions {
         if (g.props.getProperty("currentISP") == null) {
             missing.append("currentISP,");
         } else {
-            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? Globals.PrimaryISP : Globals.BackupISP;
+            g.currentISP = g.props.getProperty("currentISP").equals("primaryISP") ? Globals.PRIMARY_ISP : Globals.BACKUP_ISP;
         }
 
         if (g.props.getProperty("triggerDuration") == null) {
@@ -99,7 +99,7 @@ public class Functions {
     }
     
     String getScriptToSwitch() {
-        if (g.currentISP == Globals.PrimaryISP) {
+        if (g.currentISP == Globals.PRIMARY_ISP) {
             return g.backupISPscript;
         } else {
             return g.primaryISPscript;
@@ -107,7 +107,7 @@ public class Functions {
     }
 
     String getCurrentISPString() {
-        if (g.currentISP == Globals.PrimaryISP) {
+        if (g.currentISP == Globals.PRIMARY_ISP) {
             return "primary";
         } else {
             return "backup";
@@ -115,7 +115,7 @@ public class Functions {
     }
     
     String getOtherISPString() {
-        if (g.currentISP == Globals.PrimaryISP) {
+        if (g.currentISP == Globals.PRIMARY_ISP) {
             return "backup";
         } else {
             return "primary";
@@ -123,7 +123,7 @@ public class Functions {
     }
 
     String getCurrentSMTPserver() {
-        if (g.currentISP == Globals.PrimaryISP) {
+        if (g.currentISP == Globals.PRIMARY_ISP) {
             return g.primarySMTPserver;
         } else {
             return g.backupSMTPserver;
@@ -221,10 +221,10 @@ public class Functions {
      */
     boolean checkISP() {
         // include some test options
-        if (g.currentISP == Globals.PrimaryISP && g.simulatePrimaryISPIsDown) {
+        if (g.currentISP == Globals.PRIMARY_ISP && g.simulatePrimaryISPIsDown) {
             return false;
         }
-        if (g.currentISP == Globals.BackupISP && g.simulateBackupISPIsDown) {
+        if (g.currentISP == Globals.BACKUP_ISP && g.simulateBackupISPIsDown) {
             return false;
         }
         // reset test mock setting
@@ -235,8 +235,8 @@ public class Functions {
 
         boolean hostFound = false;
         for (String host : g.hosts) {
-            // test a TCP connection on port 80 with the destination host and a time-out of 2000 ms.
-            if (testConnection(host, 80, 2000)) {
+            // test a TCP connection with the destination host and a time-out.
+            if (testConnection(host, Globals.HTTP_PORT, Globals.TIME_OUT)) {
                 g.lastContactWithAnyHost = System.currentTimeMillis();
                 hostFound = true;
                 g.successfulChecks++;
@@ -245,7 +245,7 @@ public class Functions {
             } else {
                 g.failedChecks++;
                 // wait 1 second before contacting the next host in the list
-                waitMilis(g.ONE_SECOND);
+                waitMilis(Globals.ONE_SECOND);
             }
         }
         return hostFound;
