@@ -20,7 +20,7 @@ public class SwitchOverImp implements SwitchOver {
     private EMailClient eMailClient;
     private int retries;
     private long interval;
-    private long doNotTryBefore; // in mS.
+    private long doNotTryBeforeMiliSeconds;
 
     SwitchOverImp(Globals g, Functions f, MyLogger myLogger, EMailClient eMailClient) {
         this.g = g;
@@ -115,7 +115,7 @@ public class SwitchOverImp implements SwitchOver {
     public final void resetAutoSwitch() {
         retries = g.getMaxRetries();
         interval = g.getRetryInterval();
-        doNotTryBefore = System.currentTimeMillis() + interval * g.ONE_SECOND;
+        doNotTryBeforeMiliSeconds = System.currentTimeMillis() + interval * g.ONE_SECOND;
     }
 
     /**
@@ -128,8 +128,8 @@ public class SwitchOverImp implements SwitchOver {
     public void tryToRevert() {
         if (!g.isBackupISPselected() && g.getCurrentISP() == Globals.BACKUP_ISP) {
             myLogger.log(Level.INFO, "Try to revert to the primary ISP: trialsLeft = {0}, time left (S) = {1}",
-                    new Object[]{retries, (doNotTryBefore - System.currentTimeMillis()) / g.ONE_SECOND});
-            if (retries <= 0 || doNotTryBefore > System.currentTimeMillis()) {
+                    new Object[]{retries, (doNotTryBeforeMiliSeconds - System.currentTimeMillis()) / g.ONE_SECOND});
+            if (retries <= 0 || doNotTryBeforeMiliSeconds > System.currentTimeMillis()) {
                 return;
             }
 
@@ -141,7 +141,7 @@ public class SwitchOverImp implements SwitchOver {
             } else {
                 // try again later
                 interval = interval * 2;
-                doNotTryBefore = System.currentTimeMillis() + interval * g.ONE_SECOND;
+                doNotTryBeforeMiliSeconds = System.currentTimeMillis() + interval * g.ONE_SECOND;
                 retries--;
                 myLogger.log(Level.INFO, "Trials left to autoswitch back to the primary ISP is set to {0} and the initial delay to {1} seconds.",
                         new Object[]{retries, interval});
