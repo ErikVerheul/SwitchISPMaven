@@ -12,8 +12,8 @@ import java.util.logging.Level;
  class Globals {
     static final long ONE_SECOND = 1000L;
     static final long FIVE_SECONDS = 5000L;
-    static final long DEFAULT_TRIGGERDURATION = 30L; //seconds
-    static final long DEFAULT_RETRYINTERVAL = 300L; //seconds
+    static final long DEFAULT_TRIGGERDURATION_IN_SEC = 30L;
+    static final long DEFAULT_RETRYINTERVAL_IN_SEC = 300L;
     static final int DEFAULT_MAXRETRIES = 5;
     static final int PRIMARY_ISP = 0;
     static final int BACKUP_ISP = 1;
@@ -62,8 +62,8 @@ import java.util.logging.Level;
 
         // initialize with temporary values which must be set to real values using JConsole
         currentISP = PRIMARY_ISP;
-        triggerDuration = DEFAULT_TRIGGERDURATION;
-        retryInterval = DEFAULT_RETRYINTERVAL;
+        triggerDuration = DEFAULT_TRIGGERDURATION_IN_SEC;
+        retryInterval = DEFAULT_RETRYINTERVAL_IN_SEC;
         maxRetries = DEFAULT_MAXRETRIES;
         backupISPselected = false;
         emailAddress = "me@mydomain.dom";
