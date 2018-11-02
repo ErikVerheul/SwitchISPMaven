@@ -135,42 +135,22 @@ public class Functions {
      */
     @SuppressWarnings("static-access")
     void writeProperties() {
-        FileOutputStream propsOutputStream = null;
-        try {
-            propsOutputStream = new FileOutputStream(g.getPropsFileName());
+        try (FileOutputStream propsOutputStream = new FileOutputStream(g.getPropsFileName())) {           
             g.getProps().store(propsOutputStream, "SwitchISP property file");
             myLogger.log(Level.INFO, "De huidige parameterwaarden zijn opgeslagen.");
         } catch (IOException e) {
             myLogger.log(Level.SEVERE, "Fout bij schrijven van de properties, de oorzaak is {0}", e);
-        } finally {
-            try {
-                if (propsOutputStream != null) {
-                    propsOutputStream.close();
-                }
-            } catch (IOException ignore) {
-                // ignore
-            }
         }
     }
 
     private boolean readProperties() {
         // read the properties file in the Globals variables, if it exists
-        FileInputStream propsInputStream = null;
-        try {
-            propsInputStream = new FileInputStream(g.getPropsFileName());
+        try (FileInputStream propsInputStream = new FileInputStream(g.getPropsFileName())) {           
             g.getProps().load(propsInputStream);
             return true;
         } catch (IOException e) {
             myLogger.log(Level.WARNING, "Fout bij lezen van de properties file " + g.getPropsFileName() + ", de oorzaak is: ", e);
             return false;
-        } finally {
-            try {
-                if (propsInputStream != null) {
-                    propsInputStream.close();
-                }
-            } catch (IOException ignore) {
-                // ignore
-            }
         }
     }
 
@@ -199,18 +179,16 @@ public class Functions {
     }
 
     /**
-     * Put this thread to sleep for ms miliseconds
+     * Put this thread to sleep for ms milliseconds
      *
      * @param ms the sleep time
      */
     void waitMilis(long ms) {
         try {
             Thread.sleep(ms);
-        } catch (java.util.concurrent.CancellationException ignore1) {
+        } catch (java.util.concurrent.CancellationException | java.lang.InterruptedException ignore1) {
             // is OK, interrupt by thread cancellation
-        } catch (java.lang.InterruptedException ignore2) {
-            // is OK, interrupt caused by thread cancellation
-        }
+        }      
     }
 
     /**

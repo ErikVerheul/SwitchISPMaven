@@ -12,15 +12,15 @@ public class OutputQueue {
     static final int MAX_SIZE = 2000;
     static final int INIT_CAPACITY = 10000;
     private int size = DEFAULT_SIZE;
-    private int maxSize = MAX_SIZE;
+    private final int maxSize = MAX_SIZE;
     private BlockingQueue<String> queue;
 
     OutputQueue() {
-        queue = new LinkedBlockingQueue<String>();
+        queue = new LinkedBlockingQueue<>();
     }
 
     OutputQueue(int size) {
-        queue = new LinkedBlockingQueue<String>();
+        queue = new LinkedBlockingQueue<>();
         if (size > 0 && size <= maxSize) {
             this.size = size;
         }
