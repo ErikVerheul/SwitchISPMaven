@@ -68,7 +68,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <!-- Shared version number properties -->
-        <org.springframework.version>4.3.20.RELEASE</org.springframework.version>
+        <org.springframework.version>4.3.30.RELEASE</org.springframework.version>
     </properties>
 
     <dependencies>
